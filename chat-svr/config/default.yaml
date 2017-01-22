@@ -1,0 +1,32 @@
+---
+  websocket:
+    port: 3000
+  log4js:
+    appenders:
+      - type: "datefile"
+        category: "access" # アクセスログ
+        filename: "/var/log/local/ws-chat-sample/access.log"
+        pattern: "-yyyy-MM-dd"
+        backups: 10
+      - type: "datefile"
+        category: "http" # 通信ログ
+        filename: "/var/log/local/ws-chat-sample/http.log"
+        pattern: "-yyyy-MM-dd"
+        backups: 10
+      - type: "datefile"
+        category: "error" # エラーログ
+        filename: "/var/log/local/ws-chat-sample/error.log"
+        pattern: "-yyyy-MM-dd"
+        maxLogSize: 107374182400 # 100MB
+      - type: "file"
+        category: "debug" # デバッグログ
+        filename: "/var/log/local/ws-chat-sample/debug.log"
+        backups: 10
+        maxLogSize: 10737418240 # 10MB
+      - type: "console" # コンソール
+    levels:
+      access: "INFO"
+      http: "INFO"
+      error: "INFO"
+      debug: "DEBUG"
+    replaceConsole: true

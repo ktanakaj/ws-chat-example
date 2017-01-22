@@ -1,0 +1,18 @@
+---
+  log4js:
+    appenders:
+      - type: "console"
+        category: "access" # アクセスログ
+      - type: "console"
+        category: "http" # 通信ログ
+      - type: "console"
+        category: "error" # エラーログ
+      - type: "console"
+        category: "debug" # デバッグログ
+      - type: "console" # コンソール
+    levels:
+      access: "INFO"
+      http: "INFO"
+      error: "INFO"
+      debug: "INFO"
+    replaceConsole: false
