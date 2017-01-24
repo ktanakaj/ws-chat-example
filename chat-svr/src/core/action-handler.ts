@@ -55,7 +55,7 @@ export default function (request: JsonRpc2Request, session: Object, ws: WebSocke
  * アクションコールのエラーイベントにハンドラーを登録する。
  * @param handler エラーハンドラー。※エラーを揉み消さない場合は再スローすること
  */
-export function onError(handler: Function): void {
+export function onError(handler: (err: any) => {}): void {
 	actionErrorHandler = handler;
 }
 
@@ -63,12 +63,12 @@ export function onError(handler: Function): void {
  * アクションコールのエラーイベントのハンドラー。
  * @param err エラー情報。
  */
-let actionErrorHandler: Function = function (err: any) {
+let actionErrorHandler: (err: any) => {} = function (err: any) {
 	// 何も登録されていない場合は、デフォルトのエラーハンドラーを呼ぶ
 	// エラーは解消されないはずなので再スローする
 	errorHandler(err);
 	throw err;
-}
+};
 
 /**
  * アクションコールのエラーイベントのハンドラーを実行する。

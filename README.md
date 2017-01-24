@@ -1,6 +1,6 @@
-# WebSocket勉強用Chatアプリ
+# WebSocketサンプルChatアプリ
 
-WebSocket勉強用のChatアプリ（作成中）。
+WebSocketサンプルとして作成中のChatアプリです。
 サーバー側はWS、クライアント側はAngular2で実装予定。
 
 ## 環境

@@ -9,6 +9,7 @@ const logger = log4js.getLogger('error');
 /**
  * JSON-RPC2エラーハンドラー。
  * @param err エラー情報。
+ * @param next 後続のハンドラーへのcallback。
  */
 function handleJsonRpcError(err: any, next: Function): void {
 	if (err instanceof JsonRpcError) {
