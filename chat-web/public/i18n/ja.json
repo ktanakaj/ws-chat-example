@@ -1,3 +1,9 @@
 {
-	"COPYRIGHT": "Copyright (C) 2017 Koichi Tanaka All Rights Reserved."
+	"APP_NAME": "WebSocket Chat Sample App",
+	"COPYRIGHT": "Copyright (C) 2017 Koichi Tanaka All Rights Reserved.",
+	"ERROR": {
+		"BAD_REQUEST": "指定されたパラメータは無効です。",
+		"NOT_FOUND": "指定されたページの読込に失敗しました。ブラウザを再読み込みしてください。",
+		"FATAL": "エラーが発生しました。ブラウザを再読み込みして再度実行してください。"
+	}
 }
