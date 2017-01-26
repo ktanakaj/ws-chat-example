@@ -4,7 +4,7 @@
  */
 import { Injectable } from '@angular/core';
 import { Cache } from '../core/cache';
-import { WebSocketService } from './websocket.service';
+import { JsonRpc2Service } from './jsonrpc2.service';
 
 export interface EnvResult {
 	environment?: string;
@@ -21,9 +21,9 @@ export class EnvService {
 
 	/**
 	 * モジュールをDIしてコンポーネントを生成する。
-	 * @param wsService WebSocketサービス。
+	 * @param rpcService JSON-RPCサービス。
 	 */
-	constructor(private wsService: WebSocketService) { }
+	constructor(private rpcService: JsonRpc2Service) { }
 
 	/**
 	 * システム設定情報を取得する。
@@ -39,6 +39,15 @@ export class EnvService {
 	 * @returns システム設定情報。
 	 */
 	private envImpl(): Promise<EnvResult> {
-		return this.wsService.callProcedure('env');
+		return this.rpcService.callProcedure('env');
+	}
+
+	/**
+	 * このインスタンスをJSONに変換する。
+	 * @returns JSON用オブジェクト。
+	 */
+	toJSON(): any {
+		// キャッシュ処理でthisが循環参照になるのでその対処
+		return { name: 'EnvService' };
 	}
 }

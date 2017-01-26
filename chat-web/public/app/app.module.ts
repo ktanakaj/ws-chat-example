@@ -9,7 +9,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from 'ng2-translate';
 import browserHelper from './core/browser-helper';
-import { WebSocketService, CONNECT_URL } from './shared/websocket.service';
+import { CONNECT_URL } from './shared/websocket.service';
+import { JsonRpc2Service } from './shared/jsonrpc2.service';
 import { EnvService } from './shared/env.service';
 import { AppComponent } from './app.component';
 import { TopComponent } from './top/top.component';
@@ -69,7 +70,7 @@ class DefaultErrorHandler implements ErrorHandler {
 		{ provide: LOCALE_ID, useValue: browserHelper.getLocale() },
 		{ provide: ErrorHandler, useClass: DefaultErrorHandler },
 		{ provide: CONNECT_URL, useValue: 'ws://' + window.location.host + '/ws' },
-		WebSocketService,
+		JsonRpc2Service,
 		EnvService,
 	],
 	bootstrap: [AppComponent]
