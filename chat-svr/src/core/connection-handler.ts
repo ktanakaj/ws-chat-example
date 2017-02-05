@@ -5,9 +5,9 @@
 import * as WebSocket from 'ws';
 import * as log4js from 'log4js';
 import * as Random from 'random-js';
+import { receive } from 'json-rpc2-implementer';
 import errorHandler from './error-handler';
-import actionHandler from './action-handler';
-import * as jsonRpc2 from './json-rpc2';
+import methodHandler from './method-handler';
 const logger = log4js.getLogger('access');
 const random = new Random();
 
@@ -48,53 +48,11 @@ export default function (ws: WebSocket): void {
 	ws.on('message', async function (message: string) {
 		// JSON-RPC2形式の引数を想定
 		logger.info(formatAccessLog('RECEIVE', message));
-		let req;
-		try {
-			req = jsonRpc2.parseRequest(message);
-		} catch (e) {
-			send(jsonRpc2.createResponse(null, null, e));
-			return errorHandler(e);
-		}
-		if (!Array.isArray(req)) {
-			// 通常のリクエスト
-			const res = await doAction(req);
-			if (res) {
-				send(res);
-			}
-		} else {
-			// バッチリクエスト
-			const responses = [];
-			for (let r of req) {
-				const res = await doAction(r);
-				if (res) {
-					responses.push(res);
-				}
-			}
-			if (responses.length > 0) {
-				send(responses);
-			}
+		const res = await receive(message, methodHandler);
+		if (res) {
+			send(res);
 		}
 	});
-
-	/**
-	 * アクションハンドラーを実行する。
-	 * @param request リクエスト情報。
-	 * @returns レスポンス情報。
-	 */
-	async function doAction(request: jsonRpc2.JsonRpc2Request): Promise<jsonRpc2.JsonRpc2Response> {
-		// アクションハンドラーをコールして、その結果をJSON-RPC2のレスポンスにする
-		try {
-			const result = await actionHandler(request, session, ws);
-			// ID無しは応答不要なので、IDがある場合のみレスポンスを返す
-			if (request.id !== undefined && request.id !== null) {
-				return jsonRpc2.createResponse(request.id, result);
-			}
-		} catch (e) {
-			// エラー時はリクエストIDの有無にかかわらず返す
-			return jsonRpc2.createResponse(request.id, null, e);
-		}
-		return null;
-	}
 
 	/**
 	 * メッセージを送信する。

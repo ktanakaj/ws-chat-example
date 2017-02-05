@@ -1,12 +1,12 @@
 /**
- * アクションハンドラーのNode.jsモジュール。
- * @module ./core/action-handler
+ * メソッドハンドラーのNode.jsモジュール。
+ * @module ./core/method-handler
  */
 import * as WebSocket from 'ws';
 import * as path from 'path';
 import fileUtils from './utils/file-utils';
 import errorHandler from './error-handler';
-import { JsonRpc2Request, JsonRpcError, ErrorCode } from './json-rpc2';
+import { JsonRpc2Request, JsonRpcError, ErrorCode } from 'json-rpc2-implementer';
 
 /** アクションを格納するディレクトリのパス */
 const ACTION_DIR = "../actions/";
@@ -56,14 +56,14 @@ export default function (request: JsonRpc2Request, session: Object, ws: WebSocke
  * @param handler エラーハンドラー。※エラーを揉み消さない場合は再スローすること
  */
 export function onError(handler: (err: any) => {}): void {
-	actionErrorHandler = handler;
+	methodErrorHandler = handler;
 }
 
 /**
  * アクションコールのエラーイベントのハンドラー。
  * @param err エラー情報。
  */
-let actionErrorHandler: (err: any) => {} = function (err: any) {
+let methodErrorHandler: (err: any) => {} = function (err: any) {
 	// 何も登録されていない場合は、デフォルトのエラーハンドラーを呼ぶ
 	// エラーは解消されないはずなので再スローする
 	errorHandler(err);
@@ -77,7 +77,7 @@ let actionErrorHandler: (err: any) => {} = function (err: any) {
  */
 function callErrorHandler(err: any): Promise<any> {
 	try {
-		actionErrorHandler(err);
+		methodErrorHandler(err);
 		return Promise.resolve(null);
 	} catch (e) {
 		return Promise.reject(err);

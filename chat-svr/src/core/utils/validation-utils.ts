@@ -2,7 +2,7 @@
  * バリデーションユーティリティモジュール。
  * @module ./core/utils/validation-utils
  */
-import { JsonRpcError, ErrorCode } from '../json-rpc2';
+import { JsonRpcError, ErrorCode } from 'json-rpc2-implementer';
 
 /**
  * バリデートエラーのメッセージを生成する。

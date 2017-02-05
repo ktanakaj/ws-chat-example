@@ -3,7 +3,7 @@
  * @module ./app-error
  */
 
-import { JsonRpcError } from './core/json-rpc2';
+import { JsonRpcError } from 'json-rpc2-implementer';
 
 /**
  * アプリケーションエラーとしてエラーコードを返すエラーの例外クラス。
@@ -17,6 +17,6 @@ export class AppError extends JsonRpcError {
 	 */
 	constructor(code?: number, message?: string, data?: any) {
 		super(code, message, data);
-		this.name = "AppError";
+		// this.name = "AppError";
 	}
 }

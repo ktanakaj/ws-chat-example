@@ -2,7 +2,7 @@
  * エラーハンドラーのNode.jsモジュール。
  * @module ./core/error-handlers
  */
-import { JsonRpcError, ErrorCode } from './json-rpc2';
+import { JsonRpcError, ErrorCode } from 'json-rpc2-implementer';;
 import * as log4js from 'log4js';
 const logger = log4js.getLogger('error');
 
