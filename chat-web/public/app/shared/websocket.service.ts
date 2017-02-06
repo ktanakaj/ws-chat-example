@@ -10,7 +10,7 @@ import { Injectable, Inject, Optional, OpaqueToken } from '@angular/core';
 /**
  * 接続先URLのDIキー。
  */
-export declare const CONNECT_URL: OpaqueToken;
+export const CONNECT_URL = new OpaqueToken('connectUrl');
 
 /**
  * WebSocketサービスモジュールクラス。

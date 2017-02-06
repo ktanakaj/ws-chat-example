@@ -69,7 +69,7 @@ class DefaultErrorHandler implements ErrorHandler {
 	providers: [
 		{ provide: LOCALE_ID, useValue: browserHelper.getLocale() },
 		{ provide: ErrorHandler, useClass: DefaultErrorHandler },
-		{ provide: CONNECT_URL, useValue: 'ws://' + window.location.host + '/ws' },
+		{ provide: CONNECT_URL, useValue: 'ws://' + window.location.host + '/ws/' },
 		JsonRpc2Service,
 		EnvService,
 	],
