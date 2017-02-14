@@ -79,9 +79,13 @@ export class WebSocketService {
 	/**
 	 * メッセージを送信する。
 	 * @param message メッセージ。
+	 * @param toJson JSONエンコードする場合true。デフォルトtrue。
 	 */
-	send(message: any): void {
-		this.queue.push(JSON.stringify(message));
+	send(message: any, toJson: boolean = true): void {
+		if (toJson) {
+			message = JSON.stringify(message);
+		}
+		this.queue.push(message);
 		if (this.ws.readyState === WebSocket.OPEN) {
 			this.fireQueue();
 		} else if (this.ws.readyState !== WebSocket.CONNECTING) {
