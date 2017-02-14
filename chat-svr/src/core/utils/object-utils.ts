@@ -115,10 +115,22 @@ function mergePushArray(objs1: Array<Object>, objs2: Array<Object>, idKey1: stri
 	return objs1;
 }
 
+/**
+ * オブジェクトはPromiseか？
+ * @param obj チェックするオブジェクト。
+ * @returns Promiseの場合true。
+ */
+function isPromise(obj: any): boolean {
+	// bluebirdなどが有効な環境だと、instanceofだけでは正しく判定できないためその対処
+	// http://stackoverflow.com/questions/27746304/how-do-i-tell-if-an-object-is-a-promise
+	return obj instanceof Promise || (obj && typeof obj.then === 'function');
+}
+
 export default {
 	get: get,
 	set: set,
 	copy: copy,
 	mergeArray: mergeArray,
 	mergePushArray: mergePushArray,
+	isPromise: isPromise,
 };

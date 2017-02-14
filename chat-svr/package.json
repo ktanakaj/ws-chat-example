@@ -17,38 +17,38 @@
     "tslint": "tslint ./src"
   },
   "engines": {
-    "node": ">=6.9.1"
+    "node": ">=6.9.2"
   },
   "dependencies": {
-    "@types/config": "^0.0.31",
+    "@types/config": "^0.0.32",
     "@types/log4js": "^0.0.32",
-    "@types/node": "^6.0.55",
+    "@types/node": "^6.0.63",
     "@types/random-js": "^1.0.28",
     "@types/source-map-support": "^0.2.28",
     "@types/string": "0.0.28",
-    "@types/ws": "0.0.37",
-    "config": "^1.21.0",
-    "debug": "~2.6.0",
-    "js-yaml": "^3.6.1",
-    "json-rpc2-implementer": "^0.1.0",
+    "@types/ws": "0.0.38",
+    "config": "^1.25.1",
+    "debug": "~2.6.1",
+    "js-yaml": "^3.8.1",
+    "json-rpc2-implementer": "^0.3.0",
     "log4js": "^1.1.0",
-    "mysql": "^2.11.1",
+    "mysql": "^2.13.0",
     "random-js": "^1.0.8",
-    "source-map-support": "^0.4.8",
+    "source-map-support": "^0.4.11",
     "string": "^3.3.3",
-    "typeorm": "0.0.6",
-    "ws": "^1.1.1"
+    "typeorm": "0.0.8",
+    "ws": "^2.0.3"
   },
   "devDependencies": {
-    "@types/mocha": "^2.2.35",
+    "@types/mocha": "^2.2.39",
     "@types/power-assert": "^1.4.29",
     "espower-typescript": "^7.0.0",
     "mocha": "^3.2.0",
-    "node-pre-gyp": "^0.6.32",
-    "pm2": "^2.2.3",
+    "node-pre-gyp": "^0.6.33",
+    "pm2": "^2.4.0",
     "power-assert": "^1.4.1",
-    "tslint": "^4.2.0",
+    "tslint": "^4.4.2",
     "typedoc": "^0.5.3",
-    "typescript": "^2.1.4"
+    "typescript": "^2.1.6"
   }
 }

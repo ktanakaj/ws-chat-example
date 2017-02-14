@@ -4,8 +4,8 @@
   log4js:
     appenders:
       - type: "datefile"
-        category: "access" # アクセスログ
-        filename: "/var/log/local/ws-chat-sample/access.log"
+        category: "ws" # WebSocketログ
+        filename: "/var/log/local/ws-chat-sample/ws.log"
         pattern: "-yyyy-MM-dd"
         backups: 10
       - type: "datefile"
@@ -25,7 +25,7 @@
         maxLogSize: 10737418240 # 10MB
       - type: "console" # コンソール
     levels:
-      access: "INFO"
+      ws: "INFO"
       http: "INFO"
       error: "INFO"
       debug: "DEBUG"

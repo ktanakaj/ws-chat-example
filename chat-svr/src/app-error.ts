@@ -17,6 +17,6 @@ export class AppError extends JsonRpcError {
 	 */
 	constructor(code?: number, message?: string, data?: any) {
 		super(code, message, data);
-		// this.name = "AppError";
+		this.name = "AppError";
 	}
 }

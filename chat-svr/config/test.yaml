@@ -2,7 +2,7 @@
   log4js:
     appenders:
       - type: "console"
-        category: "access" # アクセスログ
+        category: "ws" # WebSocketログ
       - type: "console"
         category: "http" # 通信ログ
       - type: "console"
@@ -11,7 +11,7 @@
         category: "debug" # デバッグログ
       - type: "console" # コンソール
     levels:
-      access: "INFO"
+      ws: "INFO"
       http: "INFO"
       error: "INFO"
       debug: "INFO"
