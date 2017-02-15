@@ -24,7 +24,7 @@ export class WebSocketRpcConnection extends WebSocketConnection {
 		super(ws);
 		this.rpc = new JsonRpc2Implementer();
 		this.messageHandlers.push((message) => this.rpc.receive(message).catch(console.error));
-		this.rpc.sender = (message) => this.send(message);
+		this.rpc.sender = (message) => this.send(message, false);
 		this.rpc.methodHandler = (method, params, id) => {
 			return this.methodHandler(method, params, id, this);
 		};

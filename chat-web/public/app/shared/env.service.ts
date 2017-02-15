@@ -39,7 +39,7 @@ export class EnvService {
 	 * @returns システム設定情報。
 	 */
 	private envImpl(): Promise<EnvResult> {
-		return this.rpcService.callProcedure('env');
+		return this.rpcService.call('env');
 	}
 
 	/**

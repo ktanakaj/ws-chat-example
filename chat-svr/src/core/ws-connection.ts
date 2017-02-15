@@ -34,9 +34,9 @@ export class WebSocketConnection {
 	/** メッセージ受信イベントのハンドラー */
 	messageHandlers: ((message: string, connection: WebSocketConnection) => void)[] = [];
 	/** コネクション切断イベントのハンドラー */
-	closeHandlers: ((code: number, session: Object) => void)[] = [];
+	closeHandlers: ((code: number, connection: WebSocketConnection) => void)[] = [];
 	/** 通信ロガー */
-	logger: (log: string) => void = () => console.log;
+	logger: (eventName: string, body?: any) => void = () => (eventName, body) => console.log(formatAccessLog(this, eventName, body));
 
 	/**
 	 * WebSocketコネクションインスタンスを生成する。
@@ -44,28 +44,26 @@ export class WebSocketConnection {
 	 */
 	constructor(ws: WebSocket) {
 		this.ws = ws;
-
-		// セッションを開始、アクセスログ用のトラッキングIDを発行
-		this.logger(this.formatAccessLog('CONNECTION'));
+		this.logger('CONNECTION');
 
 		// 各イベントごとの処理を登録
 		ws.on('close', (code: number, reason: string) => {
-			this.logger(this.formatAccessLog('CLOSE', reason));
+			this.logger('CLOSE', reason);
 			for (let handler of this.closeHandlers) {
-				handler(code, this.session);
+				handler(code, this);
 			}
 		});
 
 		ws.on('ping', (data: any) => {
-			this.logger(this.formatAccessLog('PING', data));
+			this.logger('RECEIVE PING', data);
 		});
 
 		ws.on('pong', (data: any) => {
-			this.logger(this.formatAccessLog('PONG', data));
+			this.logger('RECEIVE PONG', data);
 		});
 
 		ws.on('message', (message: string) => {
-			this.logger(this.formatAccessLog('RECEIVE', message));
+			this.logger('RECEIVE', message);
 			for (let handler of this.messageHandlers) {
 				handler(message, this);
 			}
@@ -91,23 +89,23 @@ export class WebSocketConnection {
 					resolve();
 				}
 			});
-			this.logger(this.formatAccessLog('SEND', message));
+			this.logger('SEND', message);
 		});
-	}
-
-	/**
-	 * アクセスログを書式化する。
-	 * @param eventName イベント名。
-	 * @param body イベントデータ。
-	 * @returns ログ文字列。
-	 */
-	protected formatAccessLog(eventName: string, body?: any): string {
-		let log = eventName;
-		if (body !== undefined && body !== null && body !== '') {
-			log += ' ' + body;
-		}
-		log += ' #' + this.id;
-		return log;
 	}
 }
 
+/**
+ * アクセスログを書式化する。
+ * @param connection コネクション。
+ * @param eventName イベント名。
+ * @param body イベントデータ。
+ * @returns ログ文字列。
+ */
+export function formatAccessLog(connection: WebSocketConnection, eventName: string, body?: any): string {
+	let log = eventName;
+	if (body !== undefined && body !== null && body !== '') {
+		log += ' ' + body;
+	}
+	log += ' #' + connection.id;
+	return log;
+}

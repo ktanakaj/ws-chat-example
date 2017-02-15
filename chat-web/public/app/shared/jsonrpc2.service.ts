@@ -20,7 +20,7 @@ export class JsonRpc2Service extends WebSocketService {
 	constructor( @Inject(CONNECT_URL) @Optional() url?: string) {
 		super(url);
 		this.rpc = new JsonRpc2Implementer();
-		this.rpc.sender = (message) => this.send(message);
+		this.rpc.sender = (message) => this.send(message, false);
 		this.onMessage((ev) => this.rpc.receive(ev.data).catch(console.error));
 	}
 
@@ -30,7 +30,7 @@ export class JsonRpc2Service extends WebSocketService {
 	 * @param params 引数。
 	 * @returns 戻り値。
 	 */
-	callProcedure(method: string, params?: any): Promise<any> {
+	call(method: string, params?: any): Promise<any> {
 		return this.rpc.call(method, params);
 	}
 }
