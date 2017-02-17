@@ -10,7 +10,7 @@ import * as config from 'config';
 import * as log4js from 'log4js';
 import { formatAccessLog } from './ws-connection';
 import { WebSocketRpcConnection } from './ws-rpc-connection';
-import { MethodHandlerBuilder } from './method-handler-builder';
+import { RpcMethodInvoker } from './rpc-method-invoker';
 import errorHandler from './error-handler';
 const logger = log4js.getLogger('ws');
 
@@ -18,14 +18,14 @@ const logger = log4js.getLogger('ws');
 const WebSocketServer = WebSocket.Server;
 const wss = new WebSocketServer(config['websocket']);
 
-// メソッドハンドラーを作成
-const mhBuilder = new MethodHandlerBuilder("../ws/");
-mhBuilder.errorHandler = (err) => {
-	// エラーログだけ出して再スロー
+// メソッドディレクトリの実行インスタンスを作成
+const invoker = new RpcMethodInvoker("../ws/");
+invoker.errorHandler = (err) => {
+	// メソッドのエラーはエラーログだけ出して再スロー
 	errorHandler(err);
 	throw err;
 };
-const methodHandler = mhBuilder.toHandler();
+const methodHandler = invoker.toHandler();
 
 // コネクションハンドラーを登録
 wss.on('connection', (ws) => {

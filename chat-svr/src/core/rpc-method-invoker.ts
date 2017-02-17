@@ -1,20 +1,21 @@
 /**
- * WebSocketのJSON-RPC2メソッドハンドラー構築クラスのモジュール。
- * @module ./core/method-handler-builder
+ * RPCに対応するメソッドディレクトリのソースを実行するクラスのモジュール。
+ * @module ./core/rpc-method-invoker
  */
 import * as path from 'path';
+import * as S from 'string';
 import fileUtils from './utils/file-utils';
 import objectUtils from './utils/object-utils';
 import { JsonRpcError, ErrorCode } from 'json-rpc2-implementer';
 import { WebSocketRpcConnection } from './ws-rpc-connection';
 
 /**
- * WebSocketのJSON-RPC2メソッドハンドラー構築クラス。
+ * RPCに対応するメソッドディレクトリのソースを実行するクラス。
  */
-export class MethodHandlerBuilder {
+export class RpcMethodInvoker {
 	/**
 	 * メソッドコールエラーイベントのハンドラー。
-	 * ※ エラーを解消しない場合は再スローすること
+	 * ※ エラーを解消しない場合は再スローすること。デフォルトは再スローのみ。
 	 */
 	errorHandler: (err: any) => void = (err) => { throw err };
 
@@ -31,12 +32,13 @@ export class MethodHandlerBuilder {
 		this.methodDir = methodDir;
 
 		// メソッドディレクトリの全ファイルをメッセージに対応する処理として読み込み
+		// ※ ファイル名をメソッド名とみなす。ファイル名はキャメルケースに変換する
 		const baseDir = path.join(__dirname, this.methodDir);
 		fileUtils.directoryWalkRecursiveSync(
 			baseDir,
 			(realpath) => {
 				if (/\.[jt]s$/.test(realpath)) {
-					this.methods.set(path.join(realpath.replace(baseDir, "").replace(/\.[jt]s$/, "")), require(realpath));
+					this.methods.set(S(realpath.replace(baseDir, "").replace(/\.[jt]s$/, "")).camelize().s, require(realpath));
 				}
 			});
 	}
@@ -53,12 +55,13 @@ export class MethodHandlerBuilder {
 					throw new JsonRpcError(ErrorCode.MethodNotFound);
 				}
 				// 読み込み済みのメソッドから一致するものを探索
-				const action = self.methods.get(method);
-				if (!action || typeof (action) !== 'function') {
+				const m = self.methods.get(method);
+				if (!m || typeof m !== 'function') {
 					throw new JsonRpcError(ErrorCode.MethodNotFound);
 				}
-				// メソッドを実行
-				const result = action(params, connection);
+
+				// メソッドを実行する
+				const result = doMethod(m, params, id, connection);
 				if (objectUtils.isPromise(result)) {
 					return result.catch((e) => self.callErrorHandler(e));
 				}
@@ -86,5 +89,26 @@ export class MethodHandlerBuilder {
 	}
 }
 
+/**
+ * メソッドコードを実行する。
+ *
+ * メソッドコードは、通常の関数、もしくは method というメソッドを持ったクラスであること。
+ * メソッドクラスの場合、引数以外に id, session, connection がプロパティとして使用可能。
+ * @param method 実行する関数もしくはメソッドクラス。
+ * @param params 関数の引数。
+ * @param id RPCのID。
+ * @param connection WebSocket/RPCコネクション。
+ */
+function doMethod(method: any, params: any, id: number | string, connection: WebSocketRpcConnection) {
+	// もしファンクションがmethodという関数をもつ場合は、メソッドクラスとしてnewして実行する
+	if (!method.prototype.method || typeof method.prototype.method !== 'function') {
+		return method(params);
+	}
 
-
+	// サブ的な情報はプロパティとして渡す
+	const action = new method();
+	action.id = id;
+	action.connection = connection;
+	action.session = connection.session;
+	return action.method(params);
+}

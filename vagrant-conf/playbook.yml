@@ -108,7 +108,7 @@
           changed_when: false
           failed_when: false
         - name: Register "pm2" to service by vagrant user
-          shell: pm2 startup systemd -u vagrant
+          shell: pm2 startup systemd -u vagrant --hp /home/vagrant
           when: pm2_service_loaded.stdout == ""
         - name: Action to enable service pm2
           service: name=pm2 state=started enabled=yes

@@ -1,6 +1,6 @@
 /**
- * システム設定コントローラのNode.jsモジュール。
- * @module ./actions/env
+ * システム設定メソッドのモジュール。
+ * @module ./ws/env
  */
 const packagejson = require('../../package.json');
 
