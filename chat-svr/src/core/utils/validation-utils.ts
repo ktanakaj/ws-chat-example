@@ -2,7 +2,20 @@
  * バリデーションユーティリティモジュール。
  * @module ./core/utils/validation-utils
  */
-import { JsonRpcError, ErrorCode } from 'json-rpc2-implementer';
+
+/**
+ * バリデーションNGを示す例外クラス。
+ */
+export class ValidationError extends Error {
+	/**
+	 * 例外を生成する。
+	 * @param message 例外メッセージ。
+	 */
+	constructor(message) {
+		super(message);
+		this.name = "ValidationError";
+	}
+}
 
 /**
  * バリデートエラーのメッセージを生成する。
@@ -32,7 +45,7 @@ function makeMessage(value: any, name?: string, suffix?: string): string {
 function notFound<T>(value: T, name?: string): T {
 	// ifでfalseと判定される値の場合、空として例外を投げる
 	if (!value) {
-		throw new JsonRpcError(ErrorCode.InvalidParams, name ? makeMessage(undefined, name, "is not found") : undefined);
+		throw new ValidationError(name ? makeMessage(undefined, name, "is not found") : undefined);
 	}
 	return value;
 }
@@ -48,7 +61,7 @@ function toNumber(value: any, name?: string): number {
 	// 変換に失敗する値の場合、数値以外として例外を投げる
 	value = Number(value);
 	if (isNaN(value)) {
-		throw new JsonRpcError(ErrorCode.InvalidParams, makeMessage(value, name, "is not number"));
+		throw new ValidationError(makeMessage(value, name, "is not number"));
 	}
 	return value;
 }
@@ -64,7 +77,7 @@ function toNumber(value: any, name?: string): number {
 function min(value: any, min: number, name?: string): number {
 	value = toNumber(value);
 	if (value < min) {
-		throw new JsonRpcError(ErrorCode.InvalidParams, makeMessage(value, name, " < " + min));
+		throw new ValidationError(makeMessage(value, name, " < " + min));
 	}
 	return value;
 }
@@ -80,7 +93,7 @@ function min(value: any, min: number, name?: string): number {
 function max(value: any, max: number, name?: string): number {
 	value = toNumber(value);
 	if (value > max) {
-		throw new JsonRpcError(ErrorCode.InvalidParams, makeMessage(value, name, " > " + max));
+		throw new ValidationError(makeMessage(value, name, " > " + max));
 	}
 	return value;
 }
@@ -99,6 +112,7 @@ function range(value: any, minValue: number, maxValue: number, name?: string): n
 }
 
 export default {
+	ValidationError: ValidationError,
 	notFound: notFound,
 	toNumber: toNumber,
 	min: min,

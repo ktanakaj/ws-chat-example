@@ -1,17 +1,19 @@
 /**
  * WebSocketサーバのNode.jsモジュール。
  *
- * このディレクトリは、アプリ固有のロジックを含めない、
- * WebSocketフレームワーク/ライブラリ的なモジュールを配置。
+ * このディレクトリには、アプリ全体で共通的な仕組みや設定を記述する。
+ * アプリ固有のビジネスロジックは可能な限り含めない。
  * @module ./core
  */
 import * as WebSocket from 'ws';
 import * as config from 'config';
 import * as log4js from 'log4js';
-import { formatAccessLog } from './ws-connection';
-import { WebSocketRpcConnection } from './ws-rpc-connection';
-import { RpcMethodInvoker } from './rpc-method-invoker';
-import errorHandler from './error-handler';
+import { JsonRpcError, ErrorCode } from 'json-rpc2-implementer';
+import { ValidationError } from './utils/validation-utils';
+import { WebSocketRpcConnection } from './ws/ws-rpc-connection';
+import { RpcMethodInvoker } from './ws/rpc-method-invoker';
+import errorLogger from './error-logger';
+import rpcMethodErrorHandler from './rpc-method-error-handler';
 const logger = log4js.getLogger('ws');
 
 // WebSocketサーバを起動
@@ -19,43 +21,20 @@ const WebSocketServer = WebSocket.Server;
 const wss = new WebSocketServer(config['websocket']);
 
 // メソッドディレクトリの実行インスタンスを作成
-const invoker = new RpcMethodInvoker("../ws/");
-invoker.errorHandler = (err) => {
-	// メソッドのエラーはエラーログだけ出して再スロー
-	errorHandler(err);
-	throw err;
-};
-const methodHandler = invoker.toHandler();
+const invoker = new RpcMethodInvoker("lib/ws");
+// メソッドエラーのエラーハンドラーを登録
+invoker.errorHandler = rpcMethodErrorHandler;
 
 // コネクションハンドラーを登録
 wss.on('connection', (ws) => {
-	const conn = new WebSocketRpcConnection(ws);
-	conn.logger = (eventName, body) => wslog(eventName, formatAccessLog(conn, eventName, body));
-	conn.methodHandler = methodHandler;
+	const conn = new WebSocketRpcConnection(ws, {
+		logger: (level, message) => logger[level](message),
+		methodHandler: (method, params, id) => invoker.invoke(method, params, id, conn),
+	});
 });
 
-// エラーハンドラーを登録
-wss.on('error', errorHandler);
+// WebSocketサーバーのエラーハンドラーを登録
+wss.on('error', errorLogger);
 
 // 一応起動したサーバーを返す
 export let server = wss;
-
-/**
- * WebSocketログを出力する。
- * @param eventName イベント名。
- * @param log ログ。
- */
-function wslog(eventName, log) {
-	// ping系はログレベルを下げる
-	switch (eventName) {
-		case 'SEND PING':
-		case 'SEND PONG':
-		case 'RECEIVE PING':
-		case 'RECEIVE PONG':
-			logger.trace(log);
-			break;
-		default:
-			logger.info(log);
-			break;
-	}
-}
