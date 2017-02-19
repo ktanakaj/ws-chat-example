@@ -1,13 +1,26 @@
 /**
  * ルーム離脱メソッドのモジュール。
- * @module ./ws/join-room
+ * @module ./ws/leave-room
  */
+import { WebSocketRpcConnection } from '../core/ws/ws-rpc-connection';
+import { Room } from '../services/room';
 
 /**
- * ルームを離脱する。
- * @return ルーム情報。
+ * ルーム離脱メソッドクラス。
  */
-module.exports = function () {
-	// TODO: 未実装
-	return [];
+module.exports = class {
+	/** WebSocket/RPCコネクション */
+	connection: WebSocketRpcConnection;
+	/** セッション情報 */
+	session: { room?: Room };
+
+	/**
+	 * ルームを離脱する。
+	 */
+	invoke(): void {
+		// 未参加の場合は何もしない
+		if (this.session.room) {
+			this.session.room.leave(this.connection);
+		}
+	}
 }

@@ -1,6 +1,6 @@
 /**
  * アプリケーション汎用エラーの例外クラスモジュール。
- * @module ./app-error
+ * @module ./core/app-error
  */
 
 import { JsonRpcError } from 'json-rpc2-implementer';
