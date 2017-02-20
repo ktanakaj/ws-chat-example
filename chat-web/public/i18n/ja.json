@@ -5,5 +5,11 @@
 		"BAD_REQUEST": "指定されたパラメータは無効です。",
 		"NOT_FOUND": "指定されたページの読込に失敗しました。ブラウザを再読み込みしてください。",
 		"FATAL": "エラーが発生しました。ブラウザを再読み込みして再度実行してください。"
+	},
+	"TOP": {
+		"CREATE_FORM_TITLE": "チャットルームを作成",
+		"CREATE_FORM_NAME_REQUIRED": "ルームの名前を入力してください。",
+		"CREATE_FORM_SUBMIT": "作成",
+		"ROOM_LIST_TITLE": "チャットルーム一覧"
 	}
 }

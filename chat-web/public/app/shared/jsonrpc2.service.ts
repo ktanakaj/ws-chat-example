@@ -16,6 +16,7 @@ export class JsonRpc2Service extends WebSocketService {
 
 	/**
 	 * JSON-RPC2形式でデータをやり取りするWebSocket接続を構築する。
+	 * @param url 接続先URL。
 	 */
 	constructor( @Inject(CONNECT_URL) @Optional() url?: string) {
 		super(url);
@@ -32,5 +33,15 @@ export class JsonRpc2Service extends WebSocketService {
 	 */
 	call(method: string, params?: any): Promise<any> {
 		return this.rpc.call(method, params);
+	}
+
+	/**
+	 * JSON-RPC2でリモートプロシージャを通知を送る。
+	 * @param method メソッド名。
+	 * @param params 引数。
+	 * @returns 処理状態。
+	 */
+	notice(method: string, params?: any): Promise<void> {
+		return this.rpc.notice(method, params);
 	}
 }

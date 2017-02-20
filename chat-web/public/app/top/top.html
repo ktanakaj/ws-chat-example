@@ -1,4 +1,28 @@
 <div class="panel panel-default">
-    <div class="panel-heading">{{ "TOP.TITLE" | translate:appInfo }}</div>
-    <div class="panel-body"></div>
+    <div class="panel-heading">{{ "TOP.CREATE_FORM_TITLE" | translate }}</div>
+    <div class="panel-body">
+        <form #f="ngForm" (ngSubmit)="createRoom()" novalidate>
+            <fieldset class="form-group">
+                <input type="text" name="name" [(ngModel)]="createForm.name" #name="ngModel" required />
+                <div class="warning" *ngIf="name.errors">
+                    <div [hidden]="!name.errors.required">{{ "TOP.CREATE_FORM_NAME_REQUIRED" | translate }}</div>
+                </div>
+            </fieldset>
+            <button type="submit" class="btn btn-primary btn-sm" [disabled]="!f.form.valid">{{ "TOP.CREATE_FORM_SUBMIT" | translate }}</button>
+        </form>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">{{ "TOP.ROOM_LIST_TITLE" | translate }}</div>
+    <table class="table">
+        <tbody>
+            <tr *ngFor="let room of rooms">
+                <td><a routerLink="/rooms/{{ room.id }}" routerLinkActive="active">{{ room.name }}</a></td>
+                <td>{{ room.members }}</td>
+                <td>{{ room.totalMembers }}</td>
+                <td>{{ room.createdAt }}</td>
+                <td>{{ room.updatedAt }}</td>
+            </tr>
+        </tbody>
+    </table>
 </div>

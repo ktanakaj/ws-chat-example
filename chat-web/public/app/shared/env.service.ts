@@ -27,8 +27,8 @@ export class EnvService {
 
 	/**
 	 * システム設定情報を取得する。
-	 * @returns システム設定情報。
-	 * @throws HTTPエラーの場合。※キャッシュ有
+	 * @returns システム設定情報。※キャッシュ有
+	 * @throws 通信エラーの場合。
 	 */
 	env(): Promise<EnvResult> {
 		return this.cache.doAsyncFunc(this.envImpl, this);

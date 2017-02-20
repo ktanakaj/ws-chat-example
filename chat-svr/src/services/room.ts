@@ -58,7 +58,7 @@ export class Room {
 	 * ルームを離脱する。
 	 * @param connection 参加中のユーザーのコネクション。
 	 */
-	leave(connection: WebSocketRpcConnection) {
+	leave(connection: WebSocketRpcConnection): void {
 		// 未参加の場合何もしない
 		if (this.connections.delete(connection.id)) {
 			// 他の参加者に退室を通知（ログインが無いので人数増減だけ）
@@ -72,19 +72,18 @@ export class Room {
 	 * @param senderId 送信者の接続ID。
 	 * @param message メッセージ。
 	 */
-	sendMessage(connection: WebSocketRpcConnection, message: Message) {
+	sendMessage(connection: WebSocketRpcConnection, message: Message): void {
 		this.updatedAt = message.createdAt;
-		this.noticeAll(connection.id, 'notifyMessage', message);
+		this.notifyMessage(message);
 	}
 
 	/**
 	 * メッセージを通知する。
-	 * @param senderId 送信者の接続ID。
 	 * @param message メッセージ。
 	 */
-	protected notifyMessage(senderId: string, message: Message): void {
+	protected notifyMessage(message: Message): void {
 		// バックグランドで送信
-		this.noticeAll(senderId, 'notifyMessage', message)
+		this.noticeAll('notifyMessage', message)
 			.catch((e) => logger.error(e));
 	}
 
@@ -94,22 +93,22 @@ export class Room {
 	 */
 	protected notifyRoomStatus(senderId: string): void {
 		// バックグランドで送信
-		this.noticeAll(senderId, 'notifyRoomStatus', this)
+		this.noticeAll('notifyRoomStatus', this, senderId)
 			.catch((e) => logger.error(e));
 	}
 
 	/**
 	 * ルーム内の全員に通知を送信する。
-	 * @param senderId 送信者の接続ID。
 	 * @param method メソッド名。
 	 * @param params 引数。
+	 * @param ignoreId 送信者の接続ID。
 	 * @returns 処理状態。
 	 */
-	protected noticeAll(senderId: string, method: string, params: any): Promise<void[]> {
+	protected noticeAll(method: string, params: any, ignoreId?: string): Promise<void[]> {
 		const promises: Promise<void>[] = [];
 		for (let conn of this.connections.values()) {
-			if (conn.id !== senderId) {
-				promises.push(conn.notice('notifyMessage', params));
+			if (conn.id !== ignoreId) {
+				promises.push(conn.notice(method, params));
 			}
 		}
 		return Promise.all(promises);

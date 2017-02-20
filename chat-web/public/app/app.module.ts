@@ -12,6 +12,7 @@ import browserHelper from './core/browser-helper';
 import { CONNECT_URL } from './shared/websocket.service';
 import { JsonRpc2Service } from './shared/jsonrpc2.service';
 import { EnvService } from './shared/env.service';
+import { RoomService } from './shared/room.service';
 import { AppComponent } from './app.component';
 import { TopComponent } from './top/top.component';
 
@@ -72,6 +73,7 @@ class DefaultErrorHandler implements ErrorHandler {
 		{ provide: CONNECT_URL, useValue: 'ws://' + window.location.host + '/ws/' },
 		JsonRpc2Service,
 		EnvService,
+		RoomService,
 	],
 	bootstrap: [AppComponent]
 })
