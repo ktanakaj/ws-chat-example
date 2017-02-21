@@ -10,7 +10,7 @@ import { WebSocketConnection, WebSocketConnectionOptions } from './ws-connection
  * WebSocket上のJSON-RPC2コネクションのオプション引数。
  */
 export interface WebSocketRpcConnectionOptions extends WebSocketConnectionOptions {
-	/** メソッドコールイベントのハンドラー */
+	/** メソッドコールのハンドラー */
 	methodHandler?: (method: string, params: any, id: number | string) => any,
 }
 
@@ -21,7 +21,7 @@ export class WebSocketRpcConnection extends WebSocketConnection {
 	/** JSON-RPC2実装 */
 	rpc: JsonRpc2Implementer;
 
-	/** メソッドコールイベントのハンドラー */
+	/** メソッドコールのハンドラー */
 	methodHandler: (method: string, params: any, id: number | string) => any;
 
 	/**
@@ -33,7 +33,7 @@ export class WebSocketRpcConnection extends WebSocketConnection {
 		super(ws, options);
 		this.methodHandler = options.methodHandler;
 		this.rpc = new JsonRpc2Implementer();
-		this.messageHandlers.push((message) => this.rpc.receive(message).catch(console.error));
+		this.on('message', (message) => this.rpc.receive(message).catch(console.error));
 		this.rpc.sender = (message) => this.send(message, false);
 		this.rpc.methodHandler = (method, params, id) => {
 			return this.methodHandler(method, params, id);

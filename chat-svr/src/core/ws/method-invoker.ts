@@ -24,7 +24,7 @@ export interface InvokedEvent {
  */
 export class MethodInvoker {
 	/**
-	 * メソッドコールエラーイベントのハンドラー。
+	 * メソッドコールエラーのハンドラー。
 	 * ※ エラーを解消しない場合は再スローすること。デフォルトは再スローのみ。
 	 */
 	errorHandler: (err: any, event?: InvokedEvent) => any = (err) => { throw err };
@@ -101,7 +101,7 @@ export class MethodInvoker {
 	}
 
 	/**
-	 * メソッドコールのエラーイベントのハンドラーを実行する。
+	 * メソッドコールのエラーハンドラーを実行する。
 	 * @param err エラー情報。
 	 * @param event メソッド実行イベント情報。
 	 * @returns 処理結果。

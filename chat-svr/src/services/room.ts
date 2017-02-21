@@ -45,7 +45,7 @@ export class Room {
 		connection.session['room'] = this;
 		// コネクション切断時にルームを自動退出
 		// ※ 繰り返し呼ばれても問題ないので登録しっぱなし
-		connection.closeHandlers.push((code, c) => {
+		connection.on('close', (code, c) => {
 			this.leave(<WebSocketRpcConnection>c);
 		});
 		// ルーム累計参加者数を増やす

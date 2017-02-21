@@ -4,6 +4,7 @@
  * wsのコネクションを拡張したラッパークラス。
  * @module ./core/ws/ws-connection
  */
+import { EventEmitter } from 'events';
 import * as WebSocket from 'ws';
 import * as Random from 'random-js';
 const random = new Random();
@@ -12,10 +13,10 @@ const random = new Random();
  * WebSocketコネクションのオプション引数。
  */
 export interface WebSocketConnectionOptions {
-	/** メッセージ受信イベントのハンドラー */
-	messageHandlers?: ((message: string, connection: WebSocketConnection) => void)[],
-	/** コネクション切断イベントのハンドラー */
-	closeHandlers?: ((code: number, connection: WebSocketConnection) => void)[],
+	/** メッセージ受信イベント */
+	onmessage?: (message: string, connection: WebSocketConnection) => void,
+	/** コネクション切断イベント */
+	onclose?: (code: number, connection: WebSocketConnection) => void,
 	/** 通信ロガー */
 	logger?: (level: string, message: string) => void,
 }
@@ -23,7 +24,7 @@ export interface WebSocketConnectionOptions {
 /**
  * WebSocketコネクションクラス。
  */
-export class WebSocketConnection {
+export class WebSocketConnection extends EventEmitter {
 	/** 生のWebSocket接続 */
 	ws: WebSocket;
 	/** 一意なコネクションID */
@@ -31,10 +32,6 @@ export class WebSocketConnection {
 	/** 簡易セッション用オブジェクト */
 	session: Object = {};
 
-	/** メッセージ受信イベントのハンドラー */
-	messageHandlers: ((message: string, connection: WebSocketConnection) => void)[];
-	/** コネクション切断イベントのハンドラー */
-	closeHandlers: ((code: number, connection: WebSocketConnection) => void)[];
 	/** 通信ロガー */
 	logger: (level: string, message: string) => void;
 
@@ -44,12 +41,17 @@ export class WebSocketConnection {
 	 * @param options オプション。
 	 */
 	constructor(ws: WebSocket, options: WebSocketConnectionOptions = {}) {
+		super();
 		this.ws = ws;
 
 		// イベント系はプロパティで登録可能だが、ロガーだけはコンストラクタでも使用するため、
 		// オプションでも指定できるようにする
-		this.messageHandlers = options.messageHandlers || [];
-		this.closeHandlers = options.closeHandlers || [];
+		if (options.onmessage) {
+			this.on('message', options.onmessage);
+		}
+		if (options.onclose) {
+			this.on('close', options.onclose);
+		}
 		this.logger = options.logger || (() => (level: string, message: string) => console.log(message));
 
 		// 接続開始ログ
@@ -58,9 +60,7 @@ export class WebSocketConnection {
 		// 各イベントごとの処理を登録
 		ws.on('close', (code: number, reason: string) => {
 			this.logger('info', this.formatAccessLog('CLOSE', reason));
-			for (let handler of this.closeHandlers) {
-				handler(code, this);
-			}
+			this.emit('close', code, this);
 		});
 
 		ws.on('ping', (data: any) => {
@@ -73,9 +73,7 @@ export class WebSocketConnection {
 
 		ws.on('message', (message: string) => {
 			this.logger('info', this.formatAccessLog('RECEIVE', message));
-			for (let handler of this.messageHandlers) {
-				handler(message, this);
-			}
+			this.emit('message', message, this);
 		});
 	}
 
@@ -115,6 +113,28 @@ export class WebSocketConnection {
 		}
 		log += ' #' + this.id;
 		return log;
+	}
+
+	// イベント定義
+	emit(event: 'message', message: string, connection: WebSocketConnection): boolean;
+	emit(event: 'close', code: number, connection: WebSocketConnection): boolean;
+	emit(event: string | symbol, ...args: any[]): boolean {
+		return super.emit(event, ...args);
+	}
+	on(event: 'message', listener: (message: string, connection: WebSocketConnection) => void): this;
+	on(event: 'close', listener: (code: number, connection: WebSocketConnection) => void): this;
+	on(event: string | symbol, listener: Function): this {
+		return super.on(event, listener);
+	}
+	once(event: 'message', listener: (message: string, connection: WebSocketConnection) => void): this;
+	once(event: 'close', listener: (code: number, connection: WebSocketConnection) => void): this;
+	once(event: string | symbol, listener: Function): this {
+		return super.once(event, listener);
+	}
+	removeListener(event: 'message', listener: (message: string, connection: WebSocketConnection) => void): this;
+	removeListener(event: 'close', listener: (code: number, connection: WebSocketConnection) => void): this;
+	removeListener(event: string | symbol, listener: Function): this {
+		return super.removeListener(event, listener);
 	}
 }
 
