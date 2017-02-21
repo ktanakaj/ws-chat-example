@@ -4,13 +4,13 @@
  */
 import { Injectable, Inject, Optional } from '@angular/core';
 import { JsonRpc2Implementer } from 'json-rpc2-implementer';
-import { WebSocketService, CONNECT_URL, LOGGER } from './websocket.service';
+import { SimpleNgWebSocket, CONNECT_URL, LOGGER } from 'simple-ng-websocket';
 
 /**
  * JSON-RPC2形式のWebSocketサービスモジュールクラス。
  */
 @Injectable()
-export class JsonRpc2Service extends WebSocketService {
+export class JsonRpc2Service extends SimpleNgWebSocket {
 	/** メソッドコールのハンドラー */
 	methodHandler: (method: string, params?: any, id?: number | string) => any;
 
