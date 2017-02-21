@@ -3,6 +3,7 @@
  * @module ./app/shared/room.service
  */
 import { Injectable } from '@angular/core';
+import { EventEmitter } from 'events';
 import { JsonRpc2Service } from './jsonrpc2.service';
 
 /**
@@ -24,15 +25,32 @@ export interface Room {
 }
 
 /**
+ * メッセージ情報。
+ */
+export interface Message {
+	/** 送信者名 */
+	name: string;
+	/** メッセージ本体 */
+	body: string;
+	/** 送信日時 */
+	createdAt: Date;
+}
+
+/**
  * チャットルーム関連サービスクラス。
  */
 @Injectable()
-export class RoomService {
+export class RoomService extends EventEmitter {
 	/**
 	 * モジュールをDIしてコンポーネントを生成する。
 	 * @param rpcService JSON-RPCサービス。
 	 */
-	constructor(private rpcService: JsonRpc2Service) { }
+	constructor(private rpcService: JsonRpc2Service) {
+		super();
+		rpcService.methodHandler = (method, params) => {
+			this.emit(<any>method, params);
+		};
+	}
 
 	/**
 	 * チャットルーム一覧を取得する。
@@ -78,5 +96,27 @@ export class RoomService {
 	 */
 	sendMessage(name: string, body: string): Promise<void> {
 		return this.rpcService.call('sendMessage', { name: name, body: body });
+	}
+
+	// イベント定義
+	emit(event: 'notifyMessage', message: Message): boolean;
+	emit(event: 'notifyRoomStatus', room: Room): boolean;
+	emit(event: string | symbol, ...args: any[]): boolean {
+		return super.emit(event, ...args);
+	}
+	on(event: 'notifyMessage', listener: (message: Message) => void): this;
+	on(event: 'notifyRoomStatus', listener: (room: Room) => void): this;
+	on(event: string | symbol, listener: Function): this {
+		return super.on(event, listener);
+	}
+	once(event: 'notifyMessage', listener: (message: Message) => void): this;
+	once(event: 'notifyRoomStatus', listener: (room: Room) => void): this;
+	once(event: string | symbol, listener: Function): this {
+		return super.once(event, listener);
+	}
+	removeListener(event: 'notifyMessage', listener: (message: Message) => void): this;
+	removeListener(event: 'notifyRoomStatus', listener: (room: Room) => void): this;
+	removeListener(event: string | symbol, listener: Function): this {
+		return super.removeListener(event, listener);
 	}
 }

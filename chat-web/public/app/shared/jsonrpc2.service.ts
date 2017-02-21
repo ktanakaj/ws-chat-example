@@ -4,13 +4,16 @@
  */
 import { Injectable, Inject, Optional } from '@angular/core';
 import { JsonRpc2Implementer } from 'json-rpc2-implementer';
-import { WebSocketService, CONNECT_URL } from './websocket.service';
+import { WebSocketService, CONNECT_URL, LOGGER } from './websocket.service';
 
 /**
  * JSON-RPC2形式のWebSocketサービスモジュールクラス。
  */
 @Injectable()
 export class JsonRpc2Service extends WebSocketService {
+	/** メソッドコールのハンドラー */
+	methodHandler: (method: string, params?: any, id?: number | string) => any;
+
 	/** JSON-RPC2実装 */
 	private rpc: JsonRpc2Implementer;
 
@@ -18,11 +21,14 @@ export class JsonRpc2Service extends WebSocketService {
 	 * JSON-RPC2形式でデータをやり取りするWebSocket接続を構築する。
 	 * @param url 接続先URL。
 	 */
-	constructor( @Inject(CONNECT_URL) @Optional() url?: string) {
-		super(url);
+	constructor( @Inject(CONNECT_URL) @Optional() url?: string, @Inject(LOGGER) @Optional() logger?: (level, message) => void) {
+		super(url, logger);
 		this.rpc = new JsonRpc2Implementer();
 		this.rpc.sender = (message) => this.send(message, false);
-		this.onMessage((ev) => this.rpc.receive(ev.data).catch(console.error));
+		this.on('message', (ev) => this.rpc.receive(ev.data).catch((err) => this.logger('error', err)));
+		this.rpc.methodHandler = (method, params, id) => {
+			return this.methodHandler(method, params, id);
+		};
 	}
 
 	/**

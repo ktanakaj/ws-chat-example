@@ -9,16 +9,18 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from 'ng2-translate';
 import browserHelper from './core/browser-helper';
-import { CONNECT_URL } from './shared/websocket.service';
+import { CONNECT_URL, LOGGER } from './shared/websocket.service';
 import { JsonRpc2Service } from './shared/jsonrpc2.service';
 import { EnvService } from './shared/env.service';
 import { RoomService } from './shared/room.service';
 import { AppComponent } from './app.component';
 import { TopComponent } from './top/top.component';
+import { RoomComponent } from './rooms/room.component';
 
 /** ルート定義 */
 const appRoutes: Routes = [
 	{ path: '', pathMatch: 'full', component: TopComponent },
+	{ path: 'rooms/:id', component: RoomComponent },
 	{ path: '**', redirectTo: '/' }
 ];
 
@@ -66,11 +68,13 @@ class DefaultErrorHandler implements ErrorHandler {
 	declarations: [
 		AppComponent,
 		TopComponent,
+		RoomComponent,
 	],
 	providers: [
 		{ provide: LOCALE_ID, useValue: browserHelper.getLocale() },
 		{ provide: ErrorHandler, useClass: DefaultErrorHandler },
 		{ provide: CONNECT_URL, useValue: 'ws://' + window.location.host + '/ws/' },
+		{ provide: LOGGER, useValue: (level, message) => console.log(message) },
 		JsonRpc2Service,
 		EnvService,
 		RoomService,

@@ -11,7 +11,7 @@ import { WebSocketConnection, WebSocketConnectionOptions } from './ws-connection
  */
 export interface WebSocketRpcConnectionOptions extends WebSocketConnectionOptions {
 	/** メソッドコールのハンドラー */
-	methodHandler?: (method: string, params: any, id: number | string) => any,
+	methodHandler?: (method: string, params?: any, id?: number | string) => any,
 }
 
 /**
@@ -22,7 +22,7 @@ export class WebSocketRpcConnection extends WebSocketConnection {
 	rpc: JsonRpc2Implementer;
 
 	/** メソッドコールのハンドラー */
-	methodHandler: (method: string, params: any, id: number | string) => any;
+	methodHandler: (method: string, params?: any, id?: number | string) => any;
 
 	/**
 	 * WebSocket上にJSON-RPC2コネクション用のインスタンスを生成する。
@@ -49,7 +49,6 @@ export class WebSocketRpcConnection extends WebSocketConnection {
 	call(method: string, params: any): Promise<any> {
 		return this.rpc.call(method, params);
 	}
-
 
 	/**
 	 * JSON-RPC2通知リクエストを送信する。

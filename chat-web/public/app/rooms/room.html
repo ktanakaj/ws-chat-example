@@ -1,0 +1,36 @@
+<div class="panel panel-default">
+    <div class="panel-heading">{{ room.name }}</div>
+    <div class="panel-body">
+        {{ room.members }}, {{ room.totalMembers }}, {{ room.createdAt }}, {{ room.updatedAt }}
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">{{ "ROOM.CHAT_FORM_TITLE" | translate }}</div>
+    <div class="panel-body">
+        <form #f="ngForm" (ngSubmit)="sendMessage()" novalidate>
+            <fieldset class="form-group">
+                <input type="text" name="name" [(ngModel)]="chatForm.name" #name="ngModel" />
+            </fieldset>
+            <fieldset class="form-group">
+                <input type="text" name="body" [(ngModel)]="chatForm.body" #body="ngModel" required />
+                <div class="warning" *ngIf="body.errors">
+                    <div [hidden]="!body.errors.required">{{ "ROOM.CHAT_FORM_BODY_REQUIRED" | translate }}</div>
+                </div>
+            </fieldset>
+            <button type="submit" class="btn btn-primary btn-sm" [disabled]="!f.form.valid">{{ "ROOM.CHAT_FORM_SUBMIT" | translate }}</button>
+        </form>
+    </div>
+</div>
+<div class="panel panel-default">
+    <div class="panel-heading">{{ "ROOM.MESSAGE_LIST_TITLE" | translate }}</div>
+    <table class="table">
+        <tbody>
+            <tr *ngFor="let msg of messages">
+                <td>{{ msg.createdAt }}</td>
+                <td>{{ msg.name || '' }}</td>
+                <td>{{ msg.body }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<a routerLink="/" class="btn btn-info btn-sm">{{ "ROOM.BACK" | translate }}</a>

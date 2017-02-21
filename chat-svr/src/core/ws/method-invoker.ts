@@ -124,7 +124,7 @@ export class MethodNotFoundError extends Error {
 	 * 例外を生成する。
 	 * @param method メソッド名。
 	 */
-	constructor(method) {
+	constructor(method: string) {
 		super(`${method} is not found`);
 		this.name = "MethodNotFoundError";
 	}

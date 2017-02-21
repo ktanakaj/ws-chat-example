@@ -11,5 +11,12 @@
 		"CREATE_FORM_NAME_REQUIRED": "ルームの名前を入力してください。",
 		"CREATE_FORM_SUBMIT": "作成",
 		"ROOM_LIST_TITLE": "チャットルーム一覧"
+	},
+	"ROOM": {
+		"CHAT_FORM_TITLE": "メッセージの送信",
+		"CHAT_FORM_BODY_REQUIRED": "メッセージを入力してください。",
+		"CHAT_FORM_SUBMIT": "送信",
+		"MESSAGE_LIST_TITLE": "メッセージ履歴",
+		"BACK": "退室"
 	}
 }
