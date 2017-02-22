@@ -4,6 +4,7 @@
  */
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from 'ng2-translate';
 import { RoomService, Room, Message } from '../shared/room.service';
 
 /**
@@ -27,12 +28,21 @@ export class RoomComponent implements OnInit, OnDestroy {
 	 */
 	constructor(
 		private route: ActivatedRoute,
+		private translate: TranslateService,
 		private roomService: RoomService) {
+
+		// 通知受け取り用のイベントを登録
 		roomService.on('notifyMessage', (message) => {
 			this.messages.unshift(message);
 			this.room.updatedAt = message.createdAt;
 		});
 		roomService.on('notifyRoomStatus', (room) => this.room = room);
+
+		// 名前の初期値を設定
+		// TODO: 前回の値がある場合はをクッキーから読み込む
+		this.translate.get('MESSAGE.DEFAULT_NAME').subscribe((res: string) => {
+			this.chatForm.name = res;
+		});
 	}
 
 	/**

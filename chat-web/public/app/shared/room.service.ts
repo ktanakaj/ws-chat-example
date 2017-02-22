@@ -4,7 +4,7 @@
  */
 import { Injectable } from '@angular/core';
 import { EventEmitter } from 'events';
-import { JsonRpc2Service } from './jsonrpc2.service';
+import { JsonRpc2Service, MethodNotFoundError } from './jsonrpc2.service';
 
 /**
  * ルーム情報。
@@ -47,9 +47,16 @@ export class RoomService extends EventEmitter {
 	 */
 	constructor(private rpcService: JsonRpc2Service) {
 		super();
-		rpcService.methodHandler = (method, params) => {
-			this.emit(<any>method, params);
-		};
+		rpcService.methodHandlers.push((method, params) => {
+			switch (method) {
+				case 'notifyMessage':
+				case 'notifyRoomStatus':
+					this.emit(<any>method, params);
+					return;
+				default:
+					throw new MethodNotFoundError(method);
+			}
+		});
 	}
 
 	/**

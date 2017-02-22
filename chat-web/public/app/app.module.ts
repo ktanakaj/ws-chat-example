@@ -9,7 +9,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from 'ng2-translate';
 import browserHelper from './core/browser-helper';
-import { CONNECT_URL, LOGGER } from 'simple-ng-websocket';
+import { SimpleNgWebSocket, CONNECT_URL, LOGGER } from 'simple-ng-websocket';
 import { JsonRpc2Service } from './shared/jsonrpc2.service';
 import { EnvService } from './shared/env.service';
 import { RoomService } from './shared/room.service';
@@ -75,6 +75,7 @@ class DefaultErrorHandler implements ErrorHandler {
 		{ provide: ErrorHandler, useClass: DefaultErrorHandler },
 		{ provide: CONNECT_URL, useValue: 'ws://' + window.location.host + '/ws/' },
 		{ provide: LOGGER, useValue: (level, message) => console.log(message) },
+		SimpleNgWebSocket,
 		JsonRpc2Service,
 		EnvService,
 		RoomService,

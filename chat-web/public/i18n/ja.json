@@ -6,14 +6,28 @@
 		"NOT_FOUND": "指定されたページの読込に失敗しました。ブラウザを再読み込みしてください。",
 		"FATAL": "エラーが発生しました。ブラウザを再読み込みして再度実行してください。"
 	},
+	"ROOM": {
+		"NAME": "ルーム名",
+		"MEMBERS": "入室者数",
+		"TOTAL_MEMBERS": "累計入室者数",
+		"CREATED_AT": "作成日時",
+		"UPDATED_AT": "最終更新日時"
+	},
+	"MESSAGE": {
+		"NAME": "名前",
+		"BODY": "メッセージ",
+		"CREATED_AT": "送信日時",
+		"DEFAULT_NAME": "名無し"
+	},
 	"TOP": {
 		"CREATE_FORM_TITLE": "チャットルームを作成",
 		"CREATE_FORM_NAME_REQUIRED": "ルームの名前を入力してください。",
 		"CREATE_FORM_SUBMIT": "作成",
 		"ROOM_LIST_TITLE": "チャットルーム一覧"
 	},
-	"ROOM": {
+	"ROOM_PAGE": {
 		"CHAT_FORM_TITLE": "メッセージの送信",
+		"CHAT_FORM_NAME_REQUIRED": "名前を入力してください。",
 		"CHAT_FORM_BODY_REQUIRED": "メッセージを入力してください。",
 		"CHAT_FORM_SUBMIT": "送信",
 		"MESSAGE_LIST_TITLE": "メッセージ履歴",

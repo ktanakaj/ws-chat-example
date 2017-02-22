@@ -5,5 +5,32 @@
 		"BAD_REQUEST": "Bad request.",
 		"NOT_FOUND": "Sorry. The resource is not found.",
 		"FATAL": "Fatal Error. Please refresh the page and retry."
+	},
+	"ROOM": {
+		"NAME": "Name",
+		"MEMBERS": "Members",
+		"TOTAL_MEMBERS": "Total members",
+		"CREATED_AT": "Created at",
+		"UPDATED_AT": "Updated at"
+	},
+	"MESSAGE": {
+		"NAME": "Name",
+		"BODY": "Message",
+		"CREATED_AT": "Sent at",
+		"DEFAULT_NAME": "Anonymous"
+	},
+	"TOP": {
+		"CREATE_FORM_TITLE": "Create a chat room",
+		"CREATE_FORM_NAME_REQUIRED": "Please input new room name.",
+		"CREATE_FORM_SUBMIT": "Create",
+		"ROOM_LIST_TITLE": "Chat rooms"
+	},
+	"ROOM_PAGE": {
+		"CHAT_FORM_TITLE": "Send message",
+		"CHAT_FORM_NAME_REQUIRED": "Please input the name.",
+		"CHAT_FORM_BODY_REQUIRED": "Please input the message body.",
+		"CHAT_FORM_SUBMIT": "Submit",
+		"MESSAGE_LIST_TITLE": "History",
+		"BACK": "Leave the room"
 	}
 }

@@ -15,13 +15,22 @@
 <div class="panel panel-default">
     <div class="panel-heading">{{ "TOP.ROOM_LIST_TITLE" | translate }}</div>
     <table class="table">
+        <thead>
+            <tr>
+                <th>{{ "ROOM.NAME" | translate }}</th>
+                <th>{{ "ROOM.MEMBERS" | translate }}</th>
+                <th>{{ "ROOM.TOTAL_MEMBERS" | translate }}</th>
+                <th>{{ "ROOM.CREATED_AT" | translate }}</th>
+                <th>{{ "ROOM.UPDATED_AT" | translate }}</th>
+            </tr>
+        </thead>
         <tbody>
             <tr *ngFor="let room of rooms">
                 <td><a routerLink="/rooms/{{ room.id }}" routerLinkActive="active">{{ room.name }}</a></td>
                 <td>{{ room.members }}</td>
                 <td>{{ room.totalMembers }}</td>
-                <td>{{ room.createdAt }}</td>
-                <td>{{ room.updatedAt }}</td>
+                <td>{{ room.createdAt | date:'short' }}</td>
+                <td>{{ room.updatedAt | date:'short' }}</td>
             </tr>
         </tbody>
     </table>

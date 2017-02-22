@@ -1,36 +1,51 @@
 <div class="panel panel-default">
     <div class="panel-heading">{{ room.name }}</div>
     <div class="panel-body">
-        {{ room.members }}, {{ room.totalMembers }}, {{ room.createdAt }}, {{ room.updatedAt }}
+        <div>{{ "ROOM.MEMBERS" | translate }}: {{ room.members }}</div>
+        <div>{{ "ROOM.TOTAL_MEMBERS" | translate }}: {{ room.totalMembers }}</div>
+        <div>{{ "ROOM.CREATED_AT" | translate }}: {{ room.createdAt | date:'short' }}</div>
+        <div>{{ "ROOM.UPDATED_AT" | translate }}: {{ room.updatedAt | date:'short' }}</div>
     </div>
 </div>
 <div class="panel panel-default">
-    <div class="panel-heading">{{ "ROOM.CHAT_FORM_TITLE" | translate }}</div>
+    <div class="panel-heading">{{ "ROOM_PAGE.CHAT_FORM_TITLE" | translate }}</div>
     <div class="panel-body">
         <form #f="ngForm" (ngSubmit)="sendMessage()" novalidate>
             <fieldset class="form-group">
-                <input type="text" name="name" [(ngModel)]="chatForm.name" #name="ngModel" />
-            </fieldset>
-            <fieldset class="form-group">
-                <input type="text" name="body" [(ngModel)]="chatForm.body" #body="ngModel" required />
-                <div class="warning" *ngIf="body.errors">
-                    <div [hidden]="!body.errors.required">{{ "ROOM.CHAT_FORM_BODY_REQUIRED" | translate }}</div>
+                <label for="chatForm.name">{{ "MESSAGE.NAME" | translate }}:</label>
+                <input type="text" id="chatForm.name" name="name" [(ngModel)]="chatForm.name" #name="ngModel" required />
+                <div class="warning" *ngIf="name.errors">
+                    <div [hidden]="!name.errors.required">{{ "ROOM_PAGE.CHAT_FORM_NAME_REQUIRED" | translate }}</div>
                 </div>
             </fieldset>
-            <button type="submit" class="btn btn-primary btn-sm" [disabled]="!f.form.valid">{{ "ROOM.CHAT_FORM_SUBMIT" | translate }}</button>
+            <fieldset class="form-group">
+                <label for="chatForm.body">{{ "MESSAGE.BODY" | translate }}:</label>
+                <input type="text" id="chatForm.body" name="body" [(ngModel)]="chatForm.body" #body="ngModel" required />
+                <div class="warning" *ngIf="body.errors">
+                    <div [hidden]="!body.errors.required">{{ "ROOM_PAGE.CHAT_FORM_BODY_REQUIRED" | translate }}</div>
+                </div>
+            </fieldset>
+            <button type="submit" class="btn btn-primary btn-sm" [disabled]="!f.form.valid">{{ "ROOM_PAGE.CHAT_FORM_SUBMIT" | translate }}</button>
         </form>
     </div>
 </div>
 <div class="panel panel-default">
-    <div class="panel-heading">{{ "ROOM.MESSAGE_LIST_TITLE" | translate }}</div>
+    <div class="panel-heading">{{ "ROOM_PAGE.MESSAGE_LIST_TITLE" | translate }}</div>
     <table class="table">
+        <thead>
+            <tr>
+                <th>{{ "MESSAGE.CREATED_AT" | translate }}</th>
+                <th>{{ "MESSAGE.NAME" | translate }}</th>
+                <th>{{ "MESSAGE.BODY" | translate }}</th>
+            </tr>
+        </thead>
         <tbody>
             <tr *ngFor="let msg of messages">
-                <td>{{ msg.createdAt }}</td>
-                <td>{{ msg.name || '' }}</td>
+                <td>{{ msg.createdAt | date:'mediumTime' }}</td>
+                <td>{{ msg.name }}</td>
                 <td>{{ msg.body }}</td>
             </tr>
         </tbody>
     </table>
 </div>
-<a routerLink="/" class="btn btn-info btn-sm">{{ "ROOM.BACK" | translate }}</a>
+<a routerLink="/" class="btn btn-info btn-sm">{{ "ROOM_PAGE.BACK" | translate }}</a>
