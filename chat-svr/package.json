@@ -1,6 +1,6 @@
 {
   "name": "chat-svr",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "start": "pm2 start process.json",
@@ -32,7 +32,6 @@
     "js-yaml": "^3.8.1",
     "json-rpc2-implementer": "^0.3.0",
     "log4js": "^1.1.0",
-    "mysql": "^2.13.0",
     "random-js": "^1.0.8",
     "source-map-support": "^0.4.11",
     "string": "^3.3.3",

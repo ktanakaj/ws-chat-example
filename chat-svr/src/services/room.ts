@@ -2,15 +2,15 @@
  * ルームクラスのモジュール。
  * @module ./services/room
  */
+import { EventEmitter } from 'events';
 import * as log4js from 'log4js';
-import { WebSocketRpcConnection } from '../core/ws/ws-rpc-connection';
 import { Message } from './message';
 const logger = log4js.getLogger('error');
 
 /**
  * ルームクラス。
  */
-export class Room {
+export class Room extends EventEmitter {
 	/** ルームID */
 	id: number;
 	/** ルーム名 */
@@ -23,7 +23,7 @@ export class Room {
 	updatedAt: Date = new Date();
 
 	/** ルームの参加者のコネクション。 */
-	protected connections = new Map<string, WebSocketRpcConnection>();
+	protected connections = new Set<string>();
 
 	/**
 	 * ルームを作成する。
@@ -31,48 +31,41 @@ export class Room {
 	 * @param name ルーム名。
 	 */
 	constructor(id: number, name: string) {
+		super();
 		this.id = id;
 		this.name = name;
 	}
 
 	/**
 	 * ルームに参加する。
-	 * @param connection 参加するユーザーのコネクション。
+	 * @param connectionId 参加するユーザーのコネクションID。
 	 */
-	join(connection: WebSocketRpcConnection): void {
+	join(connectionId: string): void {
 		// ルームにコネクションを登録、セッションにルームを登録
-		this.connections.set(connection.id, connection);
-		connection.session['room'] = this;
-		// コネクション切断時にルームを自動退出
-		// ※ 繰り返し呼ばれても問題ないので登録しっぱなし
-		connection.on('close', (code, c) => {
-			this.leave(<WebSocketRpcConnection>c);
-		});
+		this.connections.add(connectionId);
 		// ルーム累計参加者数を増やす
 		++this.totalMembers;
 		// 入室を他の参加者に通知
-		this.notifyRoomStatus(connection.id);
+		this.notifyRoomStatus(connectionId);
 	}
 
 	/**
 	 * ルームを離脱する。
-	 * @param connection 参加中のユーザーのコネクション。
+	 * @param connectionId 参加中のユーザーのコネクションID。
 	 */
-	leave(connection: WebSocketRpcConnection): void {
+	leave(connectionId: string): void {
 		// 未参加の場合何もしない
-		if (this.connections.delete(connection.id)) {
+		if (this.connections.delete(connectionId)) {
 			// 他の参加者に退室を通知（ログインが無いので人数増減だけ）
-			connection.session['room'] = null;
-			this.notifyRoomStatus(connection.id);
+			this.notifyRoomStatus(connectionId);
 		}
 	}
 
 	/**
 	 * メッセージを送信する。
-	 * @param senderId 送信者の接続ID。
 	 * @param message メッセージ。
 	 */
-	sendMessage(connection: WebSocketRpcConnection, message: Message): void {
+	sendMessage(message: Message): void {
 		this.updatedAt = message.createdAt;
 		this.notifyMessage(message);
 	}
@@ -82,9 +75,7 @@ export class Room {
 	 * @param message メッセージ。
 	 */
 	protected notifyMessage(message: Message): void {
-		// バックグランドで送信
-		this.noticeAll('notifyMessage', message)
-			.catch((e) => logger.error(e));
+		this.noticeAll('notifyMessage', message);
 	}
 
 	/**
@@ -92,9 +83,7 @@ export class Room {
 	 * @param senderId 送信者の接続ID。
 	 */
 	protected notifyRoomStatus(senderId: string): void {
-		// バックグランドで送信
-		this.noticeAll('notifyRoomStatus', this, senderId)
-			.catch((e) => logger.error(e));
+		this.noticeAll('notifyRoomStatus', this, senderId);
 	}
 
 	/**
@@ -104,14 +93,11 @@ export class Room {
 	 * @param ignoreId 送信者の接続ID。
 	 * @returns 処理状態。
 	 */
-	protected noticeAll(method: string, params: any, ignoreId?: string): Promise<void[]> {
-		const promises: Promise<void>[] = [];
-		for (let conn of this.connections.values()) {
-			if (conn.id !== ignoreId) {
-				promises.push(conn.notice(method, params));
-			}
+	protected noticeAll(method: string, params: any, ignoreId?: string): void {
+		const ids = Array.from(this.connections).filter((id) => id !== ignoreId);
+		if (ids.length > 0) {
+			this.emit(<any>method, params, ids);
 		}
-		return Promise.all(promises);
 	}
 
 	/**
@@ -127,5 +113,12 @@ export class Room {
 			createdAt: this.createdAt,
 			updatedAt: this.updatedAt,
 		};
+	}
+
+	// イベント定義
+	on(event: 'notifyMessage', listener: (params: any, connectionIds: string[]) => void): this;
+	on(event: 'notifyRoomStatus', listener: (params: any, connectionIds: string[]) => void): this;
+	on(event: string | symbol, listener: Function): this {
+		return super.on(event, listener);
 	}
 }

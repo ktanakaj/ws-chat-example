@@ -20,7 +20,8 @@ module.exports = class {
 	invoke(): void {
 		// 未参加の場合は何もしない
 		if (this.session.room) {
-			this.session.room.leave(this.connection);
+			this.session.room.leave(this.connection.id);
+			this.session.room = null;
 		}
 	}
 }

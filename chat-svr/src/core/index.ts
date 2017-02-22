@@ -12,6 +12,7 @@ import { JsonRpcError, ErrorCode } from 'json-rpc2-implementer';
 import { ValidationError } from './utils/validation-utils';
 import { WebSocketRpcConnection } from './ws/ws-rpc-connection';
 import { RpcMethodInvoker } from './ws/rpc-method-invoker';
+import { WebSocketConnectionMap } from './ws/ws-connection-map';
 import errorLogger from './error-logger';
 import rpcMethodErrorHandler from './rpc-method-error-handler';
 const logger = log4js.getLogger('ws');
@@ -25,16 +26,21 @@ const invoker = new RpcMethodInvoker("lib/ws");
 // メソッドエラーのエラーハンドラーを登録
 invoker.errorHandler = rpcMethodErrorHandler;
 
+/** WebSocketサーバーインスタンス */
+export const connections = new WebSocketConnectionMap();
+
 // コネクションハンドラーを登録
 wss.on('connection', (ws) => {
 	const conn = new WebSocketRpcConnection(ws, {
 		logger: (level, message) => logger[level](message),
 		methodHandler: (method, params, id) => invoker.invoke(method, params, id, conn),
 	});
+	// 管理用のマップにも登録 ※oncloseで自動削除
+	connections.push(conn);
 });
 
 // WebSocketサーバーのエラーハンドラーを登録
 wss.on('error', errorLogger);
 
-// 一応起動したサーバーを返す
+/** 起動したWebSocketサーバーインスタンス */
 export let server = wss;

@@ -4,7 +4,7 @@
  */
 import { AppError } from '../core/app-error';
 import validationUtils from '../core/utils/validation-utils';
-import { WebSocketRpcConnection } from '../core/ws/ws-rpc-connection';
+import { WebSocketRpcConnectionWithMap } from '../core/ws/ws-connection-map';
 import { Room } from '../services/room';
 import { Message } from '../services/message';
 
@@ -13,7 +13,7 @@ import { Message } from '../services/message';
  */
 module.exports = class {
 	/** WebSocket/RPCコネクション */
-	connection: WebSocketRpcConnection;
+	connection: WebSocketRpcConnectionWithMap;
 	/** セッション情報 */
 	session: { room?: Room };
 
@@ -28,8 +28,8 @@ module.exports = class {
 		}
 		// メッセージを作成して送信
 		const msg = new Message();
-		msg.name = params.name;
+		msg.name = validationUtils.notFound(params.name);
 		msg.body = validationUtils.notFound(params.body);
-		this.session.room.sendMessage(this.connection, msg);
+		this.session.room.sendMessage(msg);
 	}
 }

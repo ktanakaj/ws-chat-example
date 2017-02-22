@@ -51,7 +51,7 @@ export class RoomService extends EventEmitter {
 			switch (method) {
 				case 'notifyMessage':
 				case 'notifyRoomStatus':
-					this.emit(<any>method, params);
+					this.emit(method, params);
 					return;
 				default:
 					throw new MethodNotFoundError(method);
@@ -106,20 +106,10 @@ export class RoomService extends EventEmitter {
 	}
 
 	// イベント定義
-	emit(event: 'notifyMessage', message: Message): boolean;
-	emit(event: 'notifyRoomStatus', room: Room): boolean;
-	emit(event: string | symbol, ...args: any[]): boolean {
-		return super.emit(event, ...args);
-	}
 	on(event: 'notifyMessage', listener: (message: Message) => void): this;
 	on(event: 'notifyRoomStatus', listener: (room: Room) => void): this;
 	on(event: string | symbol, listener: Function): this {
 		return super.on(event, listener);
-	}
-	once(event: 'notifyMessage', listener: (message: Message) => void): this;
-	once(event: 'notifyRoomStatus', listener: (room: Room) => void): this;
-	once(event: string | symbol, listener: Function): this {
-		return super.once(event, listener);
 	}
 	removeListener(event: 'notifyMessage', listener: (message: Message) => void): this;
 	removeListener(event: 'notifyRoomStatus', listener: (room: Room) => void): this;

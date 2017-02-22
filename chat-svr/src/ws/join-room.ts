@@ -32,11 +32,19 @@ module.exports = class {
 
 		// 既に参加中の場合は退出
 		if (this.session.room) {
-			this.session.room.leave(this.connection);
+			this.session.room.leave(this.connection.id);
 		}
 
-		// ルームに参加してそのルームの情報を返す
-		room.join(this.connection);
+		// ルームに参加してその情報をセッションにも登録
+		room.join(this.connection.id);
+		this.session.room = room;
+
+		// コネクション切断時にルームを自動退出するよう設定
+		// ※ 既に抜けていても問題ない処理
+		this.connection.once('close', (code, c) => {
+			room.leave(c.id);
+		});
+
 		return room;
 	}
 }
