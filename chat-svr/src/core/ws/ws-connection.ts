@@ -19,6 +19,8 @@ export interface WebSocketConnectionOptions {
 	onclose?: (code: number, connection: WebSocketConnection) => void,
 	/** 通信ロガー */
 	logger?: (level: string, message: string) => void,
+	/** Pingでコネクション維持を行う場合その間隔 (ms) */
+	keepAliveTime?: number,
 }
 
 /**
@@ -75,6 +77,9 @@ export class WebSocketConnection extends EventEmitter {
 			this.logger('info', this.formatAccessLog('RECEIVE', message));
 			this.emit('message', message, this);
 		});
+
+		// 死活監視を開始する
+		this.startKeepAlive(options.keepAliveTime);
 	}
 
 	/**
@@ -98,6 +103,34 @@ export class WebSocketConnection extends EventEmitter {
 			});
 			this.logger('info', this.formatAccessLog('SEND', message));
 		});
+	}
+
+	/**
+	 * 死活監視を開始する。
+	 * @param keepAliveTime 監視間隔 (ms)。0は監視無効。
+	 */
+	startKeepAlive(keepAliveTime: number): void {
+		// コネクション維持を行う場合、一定間隔でpingを送信する
+		// ※ JavaScriptのクライアントAPIはpingを自分から送信できないのでサーバー側から送る
+		const self = this;
+		if (keepAliveTime <= 0) {
+			return;
+		}
+		function keepAlive() {
+			if (self.ws.readyState === WebSocket.OPEN) {
+				self.ping();
+				setTimeout(keepAlive, keepAliveTime);
+			}
+		}
+		setTimeout(keepAlive, keepAliveTime);
+	}
+
+	/**
+	 * PINGを送信する。
+	 */
+	ping(): void {
+		this.ws.ping();
+		this.logger('trace', this.formatAccessLog('SEND PING'));
 	}
 
 	/**

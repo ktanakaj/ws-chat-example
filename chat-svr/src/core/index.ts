@@ -39,6 +39,7 @@ export function createServer(options: WebSocket.IServerOptions, methodDir: strin
 	wss.on('connection', (ws) => {
 		const conn = new WebSocketRpcConnection(ws, {
 			logger: (level, message) => logger[level](message),
+			keepAliveTime: config['keepAliveTime'],
 			methodHandler: (method, params, id) => invoker.invoke(method, params, id, conn),
 		});
 		// 管理用のマップにも登録 ※oncloseで自動削除

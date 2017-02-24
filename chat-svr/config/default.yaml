@@ -1,6 +1,7 @@
 ---
   websocket:
     port: 3000
+  keepAliveTime: 55000
   log4js:
     appenders:
       - type: "datefile"
