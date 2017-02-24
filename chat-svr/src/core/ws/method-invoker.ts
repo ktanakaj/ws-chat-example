@@ -44,13 +44,10 @@ export class MethodInvoker {
 		// メソッドディレクトリの全ファイルをメッセージに対応する処理として読み込み
 		// ※ ファイル名をメソッド名とみなす。ファイル名はキャメルケースに変換する
 		const baseDir = path.join(path.resolve(this.methodDir), './');
-		fileUtils.directoryWalkRecursiveSync(
-			baseDir,
-			(realpath) => {
-				if (/\.[jt]s$/.test(realpath)) {
-					this.methods.set(S(realpath.replace(baseDir, "").replace(/\.[jt]s$/, "")).camelize().s, require(realpath));
-				}
-			});
+		const funcs = fileUtils.requireDirectoriesRecursiveSync(baseDir);
+		for (let path in funcs) {
+			this.methods.set(S(path.replace(baseDir, "").replace(/\.[jt]s$/, "")).camelize().s, funcs[path]);
+		}
 	}
 
 	/**

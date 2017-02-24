@@ -1,8 +1,8 @@
 /**
  * システム設定メソッドのモジュール。
- * @module ./ws/env
+ * @module ./ws/recv/env
  */
-const packagejson = require('../../package.json');
+const packagejson = require('../../../package.json');
 
 /**
  * 環境変数情報を取得する。

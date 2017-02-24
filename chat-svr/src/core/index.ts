@@ -1,5 +1,5 @@
 /**
- * WebSocketサーバのNode.jsモジュール。
+ * サーバの起動モジュール。
  *
  * このディレクトリには、アプリ全体で共通的な仕組みや設定を記述する。
  * アプリ固有のビジネスロジックは可能な限り含めない。
@@ -16,31 +16,40 @@ import { WebSocketConnectionMap } from './ws/ws-connection-map';
 import errorLogger from './error-logger';
 import rpcMethodErrorHandler from './rpc-method-error-handler';
 const logger = log4js.getLogger('ws');
-
-// WebSocketサーバを起動
 const WebSocketServer = WebSocket.Server;
-const wss = new WebSocketServer(config['websocket']);
 
-// メソッドディレクトリの実行インスタンスを作成
-const invoker = new RpcMethodInvoker("lib/ws");
-// メソッドエラーのエラーハンドラーを登録
-invoker.errorHandler = rpcMethodErrorHandler;
+/**
+ * WebSocketサーバを作成する。
+ * @param options サーバーの起動オプション。
+ * @param methodDir メソッドファイルのディレクトリパス。※相対パスはルートから
+ * @returns 起動したサーバーとコネクション用のマップ。
+ */
+export function createServer(options: WebSocket.IServerOptions, methodDir: string): { wss: WebSocket.Server, connections: WebSocketConnectionMap } {
+	const wss = new WebSocketServer(options);
 
-/** WebSocketサーバーインスタンス */
-export const connections = new WebSocketConnectionMap();
+	// メソッドディレクトリの実行インスタンスを作成
+	const invoker = new RpcMethodInvoker(methodDir);
+	// メソッドエラーのエラーハンドラーを登録
+	invoker.errorHandler = rpcMethodErrorHandler;
 
-// コネクションハンドラーを登録
-wss.on('connection', (ws) => {
-	const conn = new WebSocketRpcConnection(ws, {
-		logger: (level, message) => logger[level](message),
-		methodHandler: (method, params, id) => invoker.invoke(method, params, id, conn),
+	// コネクション管理用のマップを作成
+	const connections = new WebSocketConnectionMap();
+
+	// コネクションハンドラーを登録
+	wss.on('connection', (ws) => {
+		const conn = new WebSocketRpcConnection(ws, {
+			logger: (level, message) => logger[level](message),
+			methodHandler: (method, params, id) => invoker.invoke(method, params, id, conn),
+		});
+		// 管理用のマップにも登録 ※oncloseで自動削除
+		connections.push(conn);
 	});
-	// 管理用のマップにも登録 ※oncloseで自動削除
-	connections.push(conn);
-});
 
-// WebSocketサーバーのエラーハンドラーを登録
-wss.on('error', errorLogger);
+	// WebSocketサーバーのエラーハンドラーを登録
+	wss.on('error', errorLogger);
 
-/** 起動したWebSocketサーバーインスタンス */
-export let server = wss;
+	return {
+		wss: wss,
+		connections: connections,
+	};
+}

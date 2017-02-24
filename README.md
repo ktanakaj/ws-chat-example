@@ -1,15 +1,14 @@
 # WebSocketサンプルChatアプリ
 
-WebSocketサンプルとして作成中のChatアプリです。
-サーバー側はWS、クライアント側はAngular2で実装予定。
+WebSocketサンプルとして作成した単純なChatアプリです。
+サーバー側はWS、クライアント側はAngular2で実装。
 
 ## 環境
 * CentOS 7
 * Node.js v6.9.x
-* MariaDB 5.5.x
 * nginx 1.10.x
 * TypeScript 2.1.x
-* Express 4.x
+* WS 2.x
     * Node-config 1.x
     * Log4js 1.x
 * Angular 2.x
@@ -28,7 +27,6 @@ WebSocketサンプルとして作成中のChatアプリです。
     * VirtualBox 5.0.x - 仮想環境
     * vagrant-vbguest - Vagrantプラグイン
 * Visual Studio Code - アプリ開発用エディター
-* MySQL Workbench 6.x - DB管理・EL図作成用ツール
 
 ## フォルダ構成
 * VMルートフォルダ
@@ -39,7 +37,7 @@ WebSocketサンプルとして作成中のChatアプリです。
 
 ## 環境構築手順
 1. Vagrantをインストールした後、ファイル一式をVMのフォルダとする場所に展開。
-* `vagrant up` でVM環境を構築（DB構築やアプリの初回ビルド等も自動実行）。
+* `vagrant up` でVM環境を構築（アプリの初回ビルド等も自動実行）。
 
 ※ `npm install` でエラーになる場合は `vagrant provision` でもう一度実行してみてください。
 
@@ -70,8 +68,6 @@ Webアプリの操作用に、以下のようなサーバーコマンドを用�
 ## その他
 各種ログは `/var/log/local/ws-chat-sample` 下に出力されます。
 アクセスログ、デバッグログ、エラーログ、それに通信ログを出力します。
-
-VMのDBを参照する場合は、MySQL Workbench等でMySQLの標準ポートに接続してください（接続情報は `default.yaml` 参照）。
 
 ## ライセンス
 [MIT](https://github.com/ktanakaj/ws-chat-sample/blob/master/LICENSE)

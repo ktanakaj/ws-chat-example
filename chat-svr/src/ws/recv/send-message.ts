@@ -1,19 +1,19 @@
 /**
  * メッセージ送信メソッドのモジュール。
- * @module ./ws/send-message
+ * @module ./ws/recv/send-message
  */
-import { AppError } from '../core/app-error';
-import validationUtils from '../core/utils/validation-utils';
-import { WebSocketRpcConnectionWithMap } from '../core/ws/ws-connection-map';
-import { Room } from '../services/room';
-import { Message } from '../services/message';
+import { AppError } from '../../core/app-error';
+import validationUtils from '../../core/utils/validation-utils';
+import { WebSocketRpcConnection } from '../../core/ws/ws-rpc-connection';
+import { Room } from '../../services/room';
+import { Message } from '../../services/message';
 
 /**
  * メッセージ送信クラス。
  */
 module.exports = class {
 	/** WebSocket/RPCコネクション */
-	connection: WebSocketRpcConnectionWithMap;
+	connection: WebSocketRpcConnection;
 	/** セッション情報 */
 	session: { room?: Room };
 

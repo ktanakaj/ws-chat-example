@@ -1,13 +1,13 @@
 /**
  * ルーム参加メソッドのモジュール。
- * @module ./ws/join-room
+ * @module ./ws/recv/join-room
  */
 import { ErrorCode } from 'json-rpc2-implementer';
-import { AppError } from '../core/app-error';
-import validationUtils from '../core/utils/validation-utils';
-import { WebSocketRpcConnection } from '../core/ws/ws-rpc-connection';
-import roomManager from '../services/room-manager';
-import { Room } from '../services/room';
+import { AppError } from '../../core/app-error';
+import validationUtils from '../../core/utils/validation-utils';
+import { WebSocketRpcConnection } from '../../core/ws/ws-rpc-connection';
+import roomManager from '../../services/room-manager';
+import { Room } from '../../services/room';
 
 /**
  * ルーム参加メソッドクラス。

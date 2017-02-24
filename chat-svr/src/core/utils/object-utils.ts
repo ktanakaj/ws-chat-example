@@ -1,5 +1,5 @@
 /**
- * オブジェクト関連ユーティリティのNode.jsモジュール。
+ * オブジェクト関連ユーティリティモジュール。
  * @module ./core/utils/object-utils
  */
 

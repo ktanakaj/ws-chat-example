@@ -1,10 +1,10 @@
 /**
  * ルーム作成メソッドのモジュール。
- * @module ./ws/new-room
+ * @module ./ws/recv/new-room
  */
-import validationUtils from '../core/utils/validation-utils';
-import roomManager from '../services/room-manager';
-import { Room } from '../services/room';
+import validationUtils from '../../core/utils/validation-utils';
+import roomManager from '../../services/room-manager';
+import { Room } from '../../services/room';
 
 /**
  * ルーム作成メソッドクラス。

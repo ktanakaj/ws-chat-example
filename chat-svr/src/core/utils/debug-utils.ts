@@ -1,5 +1,5 @@
 /**
- * デバッグ関連ユーティリティのNode.jsモジュール。
+ * デバッグ関連ユーティリティモジュール。
  * @module ./core/utils/debug-utils
  */
 import * as util from 'util';

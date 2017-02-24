@@ -1,9 +1,9 @@
 /**
  * ルーム離脱メソッドのモジュール。
- * @module ./ws/leave-room
+ * @module ./ws/recv/leave-room
  */
-import { WebSocketRpcConnection } from '../core/ws/ws-rpc-connection';
-import { Room } from '../services/room';
+import { WebSocketRpcConnection } from '../../core/ws/ws-rpc-connection';
+import { Room } from '../../services/room';
 
 /**
  * ルーム離脱メソッドクラス。
