@@ -35,7 +35,6 @@
     "random-js": "^1.0.8",
     "source-map-support": "^0.4.11",
     "string": "^3.3.3",
-    "typeorm": "0.0.8",
     "ws": "^2.0.3"
   },
   "devDependencies": {

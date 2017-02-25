@@ -1,7 +1,8 @@
 # WebSocketサンプルChatアプリ
 
 WebSocketサンプルとして作成した単純なChatアプリです。
-サーバー側はWS、クライアント側はAngular2で実装。
+サーバー側はWS、クライアント側はAngular2で実装。  
+（電文形式には[JSON-RPC2](http://www.jsonrpc.org/specification)を使用。）
 
 ## 環境
 * CentOS 7
@@ -11,9 +12,11 @@ WebSocketサンプルとして作成した単純なChatアプリです。
 * WS 2.x
     * Node-config 1.x
     * Log4js 1.x
+    * [json-rpc2-implementer](https://github.com/ktanakaj/json-rpc2-implementer) 0.3.x
 * Angular 2.x
     * webpack 1.x
     * ng2-translate 5.x
+    * [simple-ng-websocket](https://github.com/ktanakaj/simple-ng-websocket) 0.1.x
 * Mocha 3.x
     * Power-assert 1.x
 
