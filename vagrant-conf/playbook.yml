@@ -9,12 +9,6 @@
     app_web_dir: "/vagrant/chat-web"
     app_log_dir: /var/log/local/ws-chat-sample
     app_port: 3000
-    app_db:
-      - chatdb
-    app_db_users:
-      - user: chatdb_usr
-        password: chatdb001
-        privilege: "chatdb.*:ALL"
     build_target: build
   tasks:
     - block:
@@ -42,12 +36,6 @@
           yum: name=* state=latest
         - name: Install the latest version of Node.js
           yum: name=nodejs state=latest
-        - name: Install the latest version of MariaDB
-          yum: name=mariadb state=latest
-        - name: Install the latest version of MariaDB server
-          yum: name=mariadb-server state=latest
-        - name: Install the latest version of MySQL-python
-          yum: name=MySQL-python state=latest
         - name: Install the latest version of nginx
           yum: name=nginx state=latest
         - name: Install the latest version of Git
@@ -70,8 +58,6 @@
         - name: Install "wscat" node.js package globally
           npm: name=wscat global=yes
       - block:
-        - name: Action to enable service mariadb
-          service: name=mariadb state=started enabled=yes
         - name: Copy the web app configuration to nginx
           copy: src={{ app_nginx_conf_src }} dest={{ app_nginx_conf_dest }} force=no
         - name: Action to enable service nginx
@@ -83,23 +69,11 @@
           service: name=firewalld state=started enabled=yes
         - name: Open port for HTTP
           firewalld: service=http permanent=true state=enabled
-        - name: Open port for MariaDB only internal zone
-          firewalld: service=mysql permanent=true state=enabled zone=internal
-        - name: Set private ip addresses to internal zone
-          firewalld: source='172.16.0.0/12' zone=internal state=enabled
         - name: Action to reload service firewalld
           service: name=firewalld state=reloaded enabled=yes
       - block:
         - name: Create the web application logging directory
           file: path={{ app_log_dir }} state=directory owner=root group=root mode=1777
-        - name: Create the web application database
-          mysql_db: name={{ item }} encoding=utf8 state=present
-          with_items: "{{ app_db }}"
-        - name: Craete the web application db user
-          mysql_user: name={{ item[1].user }} password={{ item[1].password }} host={{ item[0] }} priv={{ item[1].privilege }} state=present
-          with_nested:
-            - [ 'localhost', '%' ]
-            - "{{ app_db_users }}"
       - block:
         - name: Check "pm2" service registration
           shell: systemctl status pm2.service | grep -e "enabled"
