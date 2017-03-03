@@ -8,13 +8,13 @@ WebSocketサンプルとして作成した単純なChatアプリです。
 * CentOS 7
 * Node.js v6.9.x
 * nginx 1.10.x
-* TypeScript 2.1.x
+* TypeScript 2.x
 * WS 2.x
     * Node-config 1.x
     * Log4js 1.x
     * [json-rpc2-implementer](https://github.com/ktanakaj/json-rpc2-implementer) 0.3.x
 * Angular 2.x
-    * webpack 1.x
+    * webpack 2.x
     * ng2-translate 5.x
     * [simple-ng-websocket](https://github.com/ktanakaj/simple-ng-websocket) 0.1.x
 * Mocha 3.x
@@ -71,7 +71,7 @@ Webアプリの操作用に、以下のようなサーバーコマンドを用�
 
 ## その他
 各種ログは `/var/log/local/ws-chat-sample` 下に出力されます。
-アクセスログ、デバッグログ、エラーログ、それに通信ログを出力します。
+アクセスログ、デバッグログ、エラーログを出力します。
 
 ## ライセンス
 [MIT](https://github.com/ktanakaj/ws-chat-sample/blob/master/LICENSE)

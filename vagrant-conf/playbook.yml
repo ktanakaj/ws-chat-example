@@ -111,7 +111,7 @@
           shell: pm2 startup systemd -u vagrant --hp /home/vagrant
           when: pm2_service_loaded.stdout == ""
         - name: Action to enable service pm2
-          service: name=pm2 state=started enabled=yes
+          service: name=pm2-vagrant state=started enabled=yes
       become: true
 
     - block:

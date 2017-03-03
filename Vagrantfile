@@ -7,11 +7,12 @@ Vagrant.configure(2) do |config|
   # ホストPCとゲストPCのネットワークを構築
   config.vm.network "private_network", ip: "172.16.10.16"
 
-  # ホストPCのこのフォルダをマウント ※2016年11月現在のcentos/7だと明示的に指定しないとエラーになる
+  # ホストPCのこのフォルダをマウント
   config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
 
-  # メモリサイズ
+  # CPU数/メモリサイズ
   config.vm.provider "virtualbox" do |vb|
+      vb.cpus = 1
       vb.memory = "1024"
   end
 
@@ -23,6 +24,6 @@ Vagrant.configure(2) do |config|
 
   # 各種サービスが共有フォルダマウント前に起動してエラーになるので、再読み込みさせる
   config.vm.provision "shell", run: "always" do |s|
-    s.inline = "sudo systemctl restart pm2"
+    s.inline = "sudo systemctl restart pm2-vagrant"
   end
 end
