@@ -45,8 +45,8 @@ export class MethodInvoker {
 		// ※ ファイル名をメソッド名とみなす。ファイル名はキャメルケースに変換する
 		const baseDir = path.join(path.resolve(this.methodDir), './');
 		const funcs = fileUtils.requireDirectoriesRecursiveSync(baseDir);
-		for (let path in funcs) {
-			this.methods.set(S(path.replace(baseDir, "").replace(/\.[jt]s$/, "")).camelize().s, funcs[path]);
+		for (let p in funcs) {
+			this.methods.set(S(p.replace(baseDir, "").replace(/\.[jt]s$/, "")).camelize().s, funcs[p]);
 		}
 	}
 
