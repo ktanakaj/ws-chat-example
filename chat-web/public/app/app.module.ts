@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpModule } from '@angular/http';
 import { RouterModule, Routes } from '@angular/router';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateModule, TranslateService } from 'ng2-translate';
 import browserHelper from './core/browser-helper';
 import { SimpleNgWebSocket, CONNECT_URL, LOGGER } from 'simple-ng-websocket';
@@ -62,7 +61,6 @@ class DefaultErrorHandler implements ErrorHandler {
 		FormsModule,
 		HttpModule,
 		RouterModule.forRoot(appRoutes),
-		NgbModule.forRoot(),
 		TranslateModule.forRoot(),
 	],
 	declarations: [

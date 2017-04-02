@@ -1,7 +1,7 @@
 # WebSocketサンプルChatアプリ
 
 WebSocketサンプルとして作成した単純なChatアプリです。
-サーバー側はWS、クライアント側はAngular2で実装。  
+サーバー側はWS、クライアント側はAngularで実装。  
 （電文形式には[JSON-RPC2](http://www.jsonrpc.org/specification)を使用。）
 
 ## 環境
@@ -13,7 +13,7 @@ WebSocketサンプルとして作成した単純なChatアプリです。
     * Node-config 1.x
     * Log4js 1.x
     * [json-rpc2-implementer](https://github.com/ktanakaj/json-rpc2-implementer) 0.3.x
-* Angular 2.x
+* Angular 4.x
     * webpack 2.x
     * ng2-translate 5.x
     * [simple-ng-websocket](https://github.com/ktanakaj/simple-ng-websocket) 0.1.x
@@ -35,7 +35,7 @@ WebSocketサンプルとして作成した単純なChatアプリです。
 * VMルートフォルダ
     * chat-svr - Node.js Webサーバーソース
         * config - アプリ設定
-    * chat-web - Angular2 Webアプリソース
+    * chat-web - Angular Webアプリソース
     * vagrant-conf - Vagrant関連ファイル
 
 ## 環境構築手順
