@@ -61,4 +61,12 @@ export class WebSocketConnectionMap {
 	get(id: string): WebSocketConnection {
 		return this.map.get(id);
 	}
+
+	/**
+	 * 全コネクションを取得する。
+	 * @returns 全コネクション。
+	 */
+	values(): IterableIterator<WebSocketConnection> {
+		return this.map.values();
+	}
 }
