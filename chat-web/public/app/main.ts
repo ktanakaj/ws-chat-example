@@ -1,6 +1,8 @@
 /**
  * @file WebSocketサンプルChatアプリブートローダー。
  */
+import "zone.js";
+import 'reflect-metadata';
 import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/retry';
