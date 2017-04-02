@@ -1,6 +1,6 @@
 /**
  * WebSocketサーバの初期化モジュール。
- * @module ./core
+ * @module ./ws
  */
 import * as config from 'config';
 import { createServer } from '../core';
