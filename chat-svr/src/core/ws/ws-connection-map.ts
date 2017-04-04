@@ -3,7 +3,7 @@
  *
  * 簡易的なWebSocketコネクションの管理用。
  * 1サーバー内のコネクション管理のみ可能。
- * @module ./core/ws/ws-connection
+ * @module ./core/ws/ws-connection-map
  */
 import { WebSocketConnection } from './ws-connection';
 import { WebSocketRpcConnection } from './ws-rpc-connection';
