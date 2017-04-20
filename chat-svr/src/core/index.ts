@@ -5,10 +5,12 @@
  * アプリ固有のビジネスロジックは可能な限り含めない。
  * @module ./core
  */
+import * as path from 'path';
 import * as WebSocket from 'ws';
 import * as config from 'config';
 import * as log4js from 'log4js';
 import { JsonRpcError, ErrorCode } from 'json-rpc2-implementer';
+import fileUtils from './utils/file-utils';
 import { ValidationError } from './utils/validation-utils';
 import { WebSocketRpcConnection } from './ws/ws-rpc-connection';
 import { RpcMethodInvoker } from './ws/rpc-method-invoker';
@@ -21,14 +23,13 @@ const WebSocketServer = WebSocket.Server;
 /**
  * WebSocketサーバを作成する。
  * @param options サーバーの起動オプション。
- * @param methodDir メソッドファイルのディレクトリパス。※相対パスはルートから
- * @returns 起動したサーバーとコネクション用のマップ。
+ * @param methodDir メソッドディレクトリのパス。※相対パスはルートから
  */
-export function createServer(options: WebSocket.IServerOptions, methodDir: string): { wss: WebSocket.Server, connections: WebSocketConnectionMap } {
+export function createServer(options: WebSocket.IServerOptions, methodDir: string): void {
 	const wss = new WebSocketServer(options);
 
 	// メソッドディレクトリの実行インスタンスを作成
-	const invoker = new RpcMethodInvoker(methodDir);
+	const invoker = new RpcMethodInvoker(path.join(methodDir, 'recv'));
 	// メソッドエラーのエラーハンドラーを登録
 	invoker.errorHandler = rpcMethodErrorHandler;
 
@@ -49,8 +50,11 @@ export function createServer(options: WebSocket.IServerOptions, methodDir: strin
 	// WebSocketサーバーのエラーハンドラーを登録
 	wss.on('error', errorLogger);
 
-	return {
-		wss: wss,
-		connections: connections,
-	};
+	// 送信メソッドディレクトリの初期化処理を呼び出し
+	const senders = fileUtils.requireDirectoriesRecursiveSync(path.join(methodDir, 'send'));
+	for (let p in senders) {
+		const sender = new senders[p];
+		sender['connections'] = connections;
+		sender['init']();
+	}
 }

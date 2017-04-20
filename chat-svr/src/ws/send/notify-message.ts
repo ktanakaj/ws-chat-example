@@ -9,17 +9,24 @@ import roomManager from '../../services/room-manager';
 const logger = log4js.getLogger('error');
 
 /**
- * ルーム管理にメッセージ投稿通知イベントの送信処理を登録する。
- * @param connections コネクション一覧マップ。
+ * メッセージ投稿通知メソッドクラス。
  */
-export default function (connections: WebSocketConnectionMap): void {
-	roomManager.on('notifyMessage', (params, connectionIds) => {
-		for (let id of connectionIds) {
-			let conn = <WebSocketRpcConnection>connections.get(id);
-			if (conn) {
-				conn.notice('notifyMessage', params)
-					.catch((e) => logger.error(e));
+module.exports = class {
+	/** コネクション一覧マップ */
+	connections: WebSocketConnectionMap;
+
+	/**
+	 * ルーム管理にメッセージ投稿通知イベントの送信処理を登録する。
+	 */
+	init(): void {
+		roomManager.on('notifyMessage', (params, connectionIds) => {
+			for (let id of connectionIds) {
+				let conn = <WebSocketRpcConnection>this.connections.get(id);
+				if (conn) {
+					conn.notice('notifyMessage', params)
+						.catch((e) => logger.error(e));
+				}
 			}
-		}
-	});
+		});
+	}
 }
