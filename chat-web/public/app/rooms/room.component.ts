@@ -32,7 +32,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 		private roomService: RoomService) {
 
 		// 通知受け取り用のイベントを登録
-		roomService.on('notifyMessage', (message) => {
+		roomService.on('notifyNewMessage', (message) => {
 			this.messages.unshift(message);
 			this.room.updatedAt = message.createdAt;
 		});
@@ -51,6 +51,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 	 */
 	async ngOnInit(): Promise<void> {
 		this.room = await this.roomService.join(this.route.snapshot.params['id']);
+		this.messages = await this.roomService.getMessages();
 	}
 
 	/**

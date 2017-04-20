@@ -19,11 +19,11 @@ module.exports = class {
 	 * ルーム管理にメッセージ投稿通知イベントの送信処理を登録する。
 	 */
 	init(): void {
-		roomManager.on('notifyMessage', (params, connectionIds) => {
+		roomManager.on('notifyNewMessage', (params, connectionIds) => {
 			for (let id of connectionIds) {
 				let conn = <WebSocketRpcConnection>this.connections.get(id);
 				if (conn) {
-					conn.notice('notifyMessage', params)
+					conn.notice('notifyNewMessage', params)
 						.catch((e) => logger.error(e));
 				}
 			}

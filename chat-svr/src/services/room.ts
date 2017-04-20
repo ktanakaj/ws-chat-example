@@ -22,6 +22,9 @@ export class Room extends EventEmitter {
 	/** ルーム更新日時 */
 	updatedAt: Date = new Date();
 
+	/** メッセージ履歴 */
+	messages: Message[] = [];
+
 	/** ルームの参加者のコネクション。 */
 	protected connections = new Set<string>();
 
@@ -67,15 +70,16 @@ export class Room extends EventEmitter {
 	 */
 	sendMessage(message: Message): void {
 		this.updatedAt = message.createdAt;
-		this.notifyMessage(message);
+		this.messages.unshift(message);
+		this.notifyNewMessage(message);
 	}
 
 	/**
 	 * メッセージを通知する。
 	 * @param message メッセージ。
 	 */
-	protected notifyMessage(message: Message): void {
-		this.noticeAll('notifyMessage', message);
+	protected notifyNewMessage(message: Message): void {
+		this.noticeAll('notifyNewMessage', message);
 	}
 
 	/**
@@ -116,7 +120,7 @@ export class Room extends EventEmitter {
 	}
 
 	// イベント定義
-	on(event: 'notifyMessage', listener: (params: any, connectionIds: string[]) => void): this;
+	on(event: 'notifyNewMessage', listener: (params: any, connectionIds: string[]) => void): this;
 	on(event: 'notifyRoomStatus', listener: (params: any, connectionIds: string[]) => void): this;
 	on(event: string | symbol, listener: Function): this {
 		return super.on(event, listener);

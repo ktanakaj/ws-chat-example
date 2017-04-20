@@ -22,7 +22,11 @@ export class TopComponent implements OnInit {
 	 * @param roomService チャットルームサービス。
 	 */
 	constructor(
-		private roomService: RoomService) { }
+		private roomService: RoomService) {
+
+		// 通知受け取り用のイベントを登録
+		roomService.on('notifyNewRoom', (room) => this.mergeRoom(room));
+	}
 
 	/**
 	 * コンポーネント起動時の処理。
@@ -37,7 +41,24 @@ export class TopComponent implements OnInit {
 	 * @return 処理状態。
 	 */
 	async createRoom(): Promise<void> {
-		const room = await this.roomService.create(this.createForm.name);
-		this.rooms.unshift(room);
+		await this.roomService.create(this.createForm.name);
+	}
+
+	/**
+	 * 渡されたチャットルームを一覧にマージする。
+	 * @param room マージするルーム。
+	 */
+	mergeRoom(room: Room): void {
+		let found = false;
+		for (let i = 0; i < this.rooms.length; i++) {
+			if (this.rooms[i].id === room.id) {
+				this.rooms[i] = room;
+				found = true;
+				break;
+			}
+		}
+		if (!found) {
+			this.rooms.unshift(room);
+		}
 	}
 }

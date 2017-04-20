@@ -23,8 +23,10 @@ export class RoomManager extends EventEmitter {
 		const room = new Room(this.rooms.size + 1, name);
 		this.rooms.set(room.id, room);
 		// イベントを伝播させる
-		room.on('notifyMessage', (params, connectionIds) => this.emit('notifyMessage', params, connectionIds));
+		room.on('notifyNewMessage', (params, connectionIds) => this.emit('notifyNewMessage', params, connectionIds));
 		room.on('notifyRoomStatus', (params, connectionIds) => this.emit('notifyRoomStatus', params, connectionIds));
+		// ルーム作成イベントを通知
+		this.emit('notifyNewRoom', room);
 		return room;
 	}
 
@@ -46,8 +48,9 @@ export class RoomManager extends EventEmitter {
 	}
 
 	// イベント定義
-	on(event: 'notifyMessage', listener: (params: any, connectionIds: string[]) => void): this;
+	on(event: 'notifyNewMessage', listener: (params: any, connectionIds: string[]) => void): this;
 	on(event: 'notifyRoomStatus', listener: (params: any, connectionIds: string[]) => void): this;
+	on(event: 'notifyNewRoom', listener: (params: any) => void): this;
 	on(event: string | symbol, listener: Function): this {
 		return super.on(event, listener);
 	}

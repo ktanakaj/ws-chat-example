@@ -49,8 +49,9 @@ export class RoomService extends EventEmitter {
 		super();
 		rpcService.methodHandlers.push((method, params) => {
 			switch (method) {
-				case 'notifyMessage':
+				case 'notifyNewMessage':
 				case 'notifyRoomStatus':
+				case 'notifyNewRoom':
 					this.emit(method, params);
 					return;
 				default:
@@ -98,6 +99,15 @@ export class RoomService extends EventEmitter {
 	}
 
 	/**
+	 * チャットメッセージ一覧を取得する。
+	 * @returns チャットメッセージ一覧。
+	 * @throws 通信エラーの場合。
+	 */
+	getMessages(): Promise<Message[]> {
+		return this.rpcService.call('getMessages');
+	}
+
+	/**
 	 * チャットメッセージを送信する。
 	 * @throws 通信エラーの場合。
 	 */
@@ -106,13 +116,15 @@ export class RoomService extends EventEmitter {
 	}
 
 	// イベント定義
-	on(event: 'notifyMessage', listener: (message: Message) => void): this;
+	on(event: 'notifyNewMessage', listener: (message: Message) => void): this;
 	on(event: 'notifyRoomStatus', listener: (room: Room) => void): this;
+	on(event: 'notifyNewRoom', listener: (room: Room) => void): this;
 	on(event: string | symbol, listener: Function): this {
 		return super.on(event, listener);
 	}
-	removeListener(event: 'notifyMessage', listener: (message: Message) => void): this;
+	removeListener(event: 'notifyNewMessage', listener: (message: Message) => void): this;
 	removeListener(event: 'notifyRoomStatus', listener: (room: Room) => void): this;
+	removeListener(event: 'notifyNewRoom', listener: (room: Room) => void): this;
 	removeListener(event: string | symbol, listener: Function): this {
 		return super.removeListener(event, listener);
 	}
