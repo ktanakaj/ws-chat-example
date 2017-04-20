@@ -2,7 +2,7 @@
  * @file WebSocketサンプルChatアプリルートコンポーネント。
  */
 import { Component } from '@angular/core';
-import { TranslateService } from 'ng2-translate';
+import { TranslateService } from '@ngx-translate/core';
 import browserHelper from './core/browser-helper';
 import { EnvService } from './shared/env.service';
 

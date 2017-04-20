@@ -15,7 +15,7 @@ WebSocketサンプルとして作成した単純なChatアプリです。
     * [json-rpc2-implementer](https://github.com/ktanakaj/json-rpc2-implementer) 0.3.x
 * Angular 4.x
     * webpack 2.x
-    * ng2-translate 5.x
+    * ngx-translate 6.x
     * [simple-ng-websocket](https://github.com/ktanakaj/simple-ng-websocket) 0.1.x
 * Mocha 3.x
     * Power-assert 1.x
