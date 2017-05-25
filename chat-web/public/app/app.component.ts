@@ -4,14 +4,14 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import browserHelper from './core/browser-helper';
-import { EnvService } from './shared/env.service';
+import { EnvService } from './core/env.service';
 
 /**
  * WebSocketサンプルChatアプリルートコンポーネントクラス。
  */
 @Component({
 	selector: 'app-root',
-	templateUrl: 'app/app.html',
+	templateUrl: 'app/app.component.html',
 })
 export class AppComponent {
 	/** 環境情報 */

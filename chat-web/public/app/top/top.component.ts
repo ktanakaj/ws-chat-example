@@ -3,13 +3,14 @@
  * @module ./app/top/top.component
  */
 import { Component, OnInit } from '@angular/core';
-import { RoomService, Room } from '../shared/room.service';
+import { Room } from '../shared/room.model';
+import { RoomService } from '../shared/room.service';
 
 /**
  * トップページコンポーネントクラス。
  */
 @Component({
-	templateUrl: 'app/top/top.html',
+	templateUrl: 'app/top/top.component.html',
 })
 export class TopComponent implements OnInit {
 	/** チャットルーム一覧 */

@@ -5,13 +5,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { RoomService, Room, Message } from '../shared/room.service';
+import { Room } from '../shared/room.model';
+import { Message } from '../shared/message.model';
+import { RoomService } from '../shared/room.service';
 
 /**
  * チャットルームページコンポーネントクラス。
  */
 @Component({
-	templateUrl: 'app/rooms/room.html',
+	templateUrl: 'app/rooms/room.component.html',
 })
 export class RoomComponent implements OnInit, OnDestroy {
 	/** チャットルーム */

@@ -10,8 +10,8 @@ import { TranslateLoader, TranslateModule, TranslateService } from '@ngx-transla
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import browserHelper from './core/browser-helper';
 import { SimpleNgWebSocket, CONNECT_URL, LOGGER } from 'simple-ng-websocket';
-import { JsonRpc2Service } from './shared/jsonrpc2.service';
-import { EnvService } from './shared/env.service';
+import { JsonRpc2Service } from './core/jsonrpc2.service';
+import { EnvService } from './core/env.service';
 import { RoomService } from './shared/room.service';
 import { AppComponent } from './app.component';
 import { TopComponent } from './top/top.component';

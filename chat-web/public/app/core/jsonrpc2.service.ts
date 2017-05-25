@@ -1,6 +1,6 @@
 /**
  * WebSocket上のJSON-RPC2サービスモジュール。
- * @module ./app/shared/jsonrpc2.service
+ * @module ./app/core/jsonrpc2.service
  */
 import { Injectable, Inject, Optional } from '@angular/core';
 import { JsonRpc2Implementer, JsonRpcError, ErrorCode } from 'json-rpc2-implementer';

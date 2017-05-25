@@ -2,7 +2,7 @@
  * @file webpack設定スクリプト。
  */
 module.exports = {
-	entry: './public/app/main.ts',
+	entry: './public/main.ts',
 	output: {
 		path: __dirname + '/public',
 		filename: 'bundle.js'

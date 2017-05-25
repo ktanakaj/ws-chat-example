@@ -4,37 +4,9 @@
  */
 import { Injectable } from '@angular/core';
 import { EventEmitter } from 'events';
-import { JsonRpc2Service, MethodNotFoundError } from './jsonrpc2.service';
-
-/**
- * ルーム情報。
- */
-export interface Room {
-	/** ルームID */
-	id: number;
-	/** ルーム名 */
-	name: string;
-	/** ルーム参加者数 */
-	members: number;
-	/** ルーム累計参加者数 */
-	totalMembers: number;
-	/** ルーム作成日時 */
-	createdAt: Date;
-	/** ルーム更新日時 */
-	updatedAt: Date;
-}
-
-/**
- * メッセージ情報。
- */
-export interface Message {
-	/** 送信者名 */
-	name: string;
-	/** メッセージ本体 */
-	body: string;
-	/** 送信日時 */
-	createdAt: Date;
-}
+import { JsonRpc2Service, MethodNotFoundError } from '../core/jsonrpc2.service';
+import { Room } from './room.model';
+import { Message } from './message.model';
 
 /**
  * チャットルーム関連サービスクラス。

@@ -1,9 +1,9 @@
 /**
  * システム設定関連サービスモジュール。
- * @module ./app/shared/env.service
+ * @module ./app/core/env.service
  */
 import { Injectable } from '@angular/core';
-import { Cache } from '../core/cache';
+import { Cache } from './cache';
 import { JsonRpc2Service } from './jsonrpc2.service';
 
 export interface EnvResult {
