@@ -6,7 +6,7 @@ WebSocketサンプルとして作成した単純なChatアプリです。
 
 ## 環境
 * CentOS 7
-* Node.js v6.9.x
+* Node.js v6.x
 * nginx 1.10.x
 * TypeScript 2.x
 * WS 2.x
@@ -26,8 +26,8 @@ WebSocketサンプルとして作成した単純なChatアプリです。
 ※ 他は未確認
 
 ### 開発環境
-* Vagrant 1.8.x - 仮想環境管理
-    * VirtualBox 5.0.x - 仮想環境
+* Vagrant 1.9.x - 仮想環境管理
+    * VirtualBox 5.1.x - 仮想環境
     * vagrant-vbguest - Vagrantプラグイン
 * Visual Studio Code - アプリ開発用エディター
 
