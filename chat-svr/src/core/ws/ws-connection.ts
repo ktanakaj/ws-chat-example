@@ -32,7 +32,7 @@ export class WebSocketConnection extends EventEmitter {
 	/** 一意なコネクションID */
 	id: string = generateUniqueId();
 	/** 簡易セッション用オブジェクト */
-	session: Object = {};
+	session: Object;
 
 	/** 通信ロガー */
 	logger: (level: string, message: string) => void;
@@ -45,6 +45,17 @@ export class WebSocketConnection extends EventEmitter {
 	constructor(ws: WebSocket, options: WebSocketConnectionOptions = {}) {
 		super();
 		this.ws = ws;
+		const self = this;
+
+		// セッションの変更をイベントととして登録
+		this.session = new Proxy({}, {
+			set(target, name: PropertyKey, value: any): boolean {
+				const old = target[name];
+				target[name] = value;
+				self.emit('sessionUpdated', name, old, value);
+				return true;
+			}
+		});
 
 		// イベント系はプロパティで登録可能だが、ロガーだけはコンストラクタでも使用するため、
 		// オプションでも指定できるようにする
@@ -151,21 +162,25 @@ export class WebSocketConnection extends EventEmitter {
 	// イベント定義
 	emit(event: 'message', message: string, connection: WebSocketConnection): boolean;
 	emit(event: 'close', code: number, connection: WebSocketConnection): boolean;
+	emit(event: 'sessionUpdated', name: PropertyKey, oldValue: any, newValue: any): boolean;
 	emit(event: string | symbol, ...args: any[]): boolean {
 		return super.emit(event, ...args);
 	}
 	on(event: 'message', listener: (message: string, connection: WebSocketConnection) => void): this;
 	on(event: 'close', listener: (code: number, connection: WebSocketConnection) => void): this;
+	on(event: 'sessionUpdated', listener: (name: PropertyKey, oldValue: any, newValue: any) => void): this;
 	on(event: string | symbol, listener: Function): this {
 		return super.on(event, listener);
 	}
 	once(event: 'message', listener: (message: string, connection: WebSocketConnection) => void): this;
 	once(event: 'close', listener: (code: number, connection: WebSocketConnection) => void): this;
+	once(event: 'sessionUpdated', listener: (name: PropertyKey, oldValue: any, newValue: any) => void): this;
 	once(event: string | symbol, listener: Function): this {
 		return super.once(event, listener);
 	}
 	removeListener(event: 'message', listener: (message: string, connection: WebSocketConnection) => void): this;
 	removeListener(event: 'close', listener: (code: number, connection: WebSocketConnection) => void): this;
+	removeListener(event: 'sessionUpdated', listener: (name: PropertyKey, oldValue: any, newValue: any) => void): this;
 	removeListener(event: string | symbol, listener: Function): this {
 		return super.removeListener(event, listener);
 	}
