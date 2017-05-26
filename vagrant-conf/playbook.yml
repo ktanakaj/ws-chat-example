@@ -100,3 +100,5 @@
           shell: npm run {{ build_target }} chdir={{ app_web_dir }}
         - name: Register the web application to pm2
           shell: npm start chdir={{ app_svr_dir }}
+        - name: Save pm2 current processes
+          shell: pm2 save

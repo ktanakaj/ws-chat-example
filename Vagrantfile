@@ -5,7 +5,7 @@ Vagrant.configure(2) do |config|
   config.vm.box = "centos/7"
 
   # ホストPCとゲストPCのネットワークを構築
-  config.vm.network "private_network", ip: "172.16.10.16"
+  config.vm.network "private_network", type: "dhcp"
 
   # ホストPCのこのフォルダをマウント
   config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
@@ -24,6 +24,6 @@ Vagrant.configure(2) do |config|
 
   # 各種サービスが共有フォルダマウント前に起動してエラーになるので、再読み込みさせる
   config.vm.provision "shell", run: "always" do |s|
-    s.inline = "sudo systemctl restart pm2-vagrant"
+    s.inline = "ip a show dev eth1 ; sudo systemctl restart pm2-vagrant"
   end
 end
