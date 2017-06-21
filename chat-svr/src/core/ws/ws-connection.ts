@@ -90,7 +90,7 @@ export class WebSocketConnection extends EventEmitter {
 		});
 
 		// 死活監視を開始する
-		this.startKeepAlive(options.keepAliveTime);
+		this.startKeepAlive(options.keepAliveTime || 0);
 	}
 
 	/**
