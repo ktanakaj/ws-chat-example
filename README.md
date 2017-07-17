@@ -6,7 +6,7 @@ WebSocketサンプルとして作成した単純なChatアプリです。
 
 ## 環境
 * CentOS 7
-* Node.js v6.x
+* Node.js v8.x
 * nginx 1.10.x
 * TypeScript 2.x
 * WS 2.x
@@ -14,8 +14,8 @@ WebSocketサンプルとして作成した単純なChatアプリです。
     * Log4js 1.x
     * [json-rpc2-implementer](https://github.com/ktanakaj/json-rpc2-implementer) 0.3.x
 * Angular 4.x
-    * webpack 2.x
-    * ngx-translate 6.x
+    * webpack 3.x
+    * ngx-translate 7.x
     * [simple-ng-websocket](https://github.com/ktanakaj/simple-ng-websocket) 0.1.x
 * Mocha 3.x
     * Power-assert 1.x

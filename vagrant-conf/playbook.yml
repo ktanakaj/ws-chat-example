@@ -2,7 +2,7 @@
 - hosts: default
   vars:
     timezone: "Asia/Tokyo"
-    nodesource: https://rpm.nodesource.com/setup_6.x
+    nodesource: https://rpm.nodesource.com/setup_8.x
     app_nginx_conf_src: "/vagrant/vagrant-conf/nginx.conf"
     app_nginx_conf_dest: /etc/nginx/default.d/vagrant.conf
     app_svr_dir: "/vagrant/chat-svr"
