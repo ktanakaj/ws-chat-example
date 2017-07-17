@@ -122,7 +122,7 @@ export class Room extends EventEmitter {
 	// イベント定義
 	on(event: 'notifyNewMessage', listener: (params: any, connectionIds: string[]) => void): this;
 	on(event: 'notifyRoomStatus', listener: (params: any, connectionIds: string[]) => void): this;
-	on(event: string | symbol, listener: Function): this {
+	on(event: string | symbol, listener: (...args: any[]) => void): this {
 		return super.on(event, listener);
 	}
 }

@@ -43,6 +43,8 @@ export function createServer(options: WebSocket.IServerOptions, methodDir: strin
 			keepAliveTime: config['keepAliveTime'],
 			methodHandler: (method, params, id) => invoker.invoke(method, params, id, conn),
 		});
+		conn.on('error', errorLogger);
+
 		// 管理用のマップにも登録 ※oncloseで自動削除
 		connections.push(conn);
 	});

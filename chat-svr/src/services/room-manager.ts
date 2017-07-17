@@ -51,7 +51,7 @@ export class RoomManager extends EventEmitter {
 	on(event: 'notifyNewMessage', listener: (params: any, connectionIds: string[]) => void): this;
 	on(event: 'notifyRoomStatus', listener: (params: any, connectionIds: string[]) => void): this;
 	on(event: 'notifyNewRoom', listener: (params: any) => void): this;
-	on(event: string | symbol, listener: Function): this {
+	on(event: string | symbol, listener: (...args: any[]) => void): this {
 		return super.on(event, listener);
 	}
 }

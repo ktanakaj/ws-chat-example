@@ -91,13 +91,13 @@ export class RoomService extends EventEmitter {
 	on(event: 'notifyNewMessage', listener: (message: Message) => void): this;
 	on(event: 'notifyRoomStatus', listener: (room: Room) => void): this;
 	on(event: 'notifyNewRoom', listener: (room: Room) => void): this;
-	on(event: string | symbol, listener: Function): this {
+	on(event: string | symbol, listener: (...args: any[]) => void): this {
 		return super.on(event, listener);
 	}
 	removeListener(event: 'notifyNewMessage', listener: (message: Message) => void): this;
 	removeListener(event: 'notifyRoomStatus', listener: (room: Room) => void): this;
 	removeListener(event: 'notifyNewRoom', listener: (room: Room) => void): this;
-	removeListener(event: string | symbol, listener: Function): this {
+	removeListener(event: string | symbol, listener: (...args: any[]) => void): this {
 		return super.removeListener(event, listener);
 	}
 }

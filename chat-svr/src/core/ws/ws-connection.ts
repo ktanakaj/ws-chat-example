@@ -17,6 +17,8 @@ export interface WebSocketConnectionOptions {
 	onmessage?: (message: string, connection: WebSocketConnection) => void,
 	/** コネクション切断イベント */
 	onclose?: (code: number, connection: WebSocketConnection) => void,
+	/** コネクションエラーイベント */
+	onerror?: (err: Error, connection: WebSocketConnection) => void,
 	/** 通信ロガー */
 	logger?: (level: string, message: string) => void,
 	/** Pingでコネクション維持を行う場合その間隔 (ms) */
@@ -74,6 +76,11 @@ export class WebSocketConnection extends EventEmitter {
 		ws.on('close', (code: number, reason: string) => {
 			this.logger('info', this.formatAccessLog('CLOSE', reason));
 			this.emit('close', code, this);
+		});
+
+		ws.on('error', (err) => {
+			this.logger('error', this.formatAccessLog('ERROR', err));
+			this.emit('error', err, this);
 		});
 
 		ws.on('ping', (data: any) => {
@@ -162,26 +169,30 @@ export class WebSocketConnection extends EventEmitter {
 	// イベント定義
 	emit(event: 'message', message: string, connection: WebSocketConnection): boolean;
 	emit(event: 'close', code: number, connection: WebSocketConnection): boolean;
+	emit(event: 'error', err: Error, connection: WebSocketConnection): boolean;
 	emit(event: 'sessionUpdated', name: PropertyKey, oldValue: any, newValue: any): boolean;
 	emit(event: string | symbol, ...args: any[]): boolean {
 		return super.emit(event, ...args);
 	}
 	on(event: 'message', listener: (message: string, connection: WebSocketConnection) => void): this;
 	on(event: 'close', listener: (code: number, connection: WebSocketConnection) => void): this;
+	on(event: 'error', listener: (err: Error, connection: WebSocketConnection) => void): this;
 	on(event: 'sessionUpdated', listener: (name: PropertyKey, oldValue: any, newValue: any) => void): this;
-	on(event: string | symbol, listener: Function): this {
+	on(event: string | symbol, listener: (...args: any[]) => void): this {
 		return super.on(event, listener);
 	}
 	once(event: 'message', listener: (message: string, connection: WebSocketConnection) => void): this;
 	once(event: 'close', listener: (code: number, connection: WebSocketConnection) => void): this;
+	once(event: 'error', listener: (err: Error, connection: WebSocketConnection) => void): this;
 	once(event: 'sessionUpdated', listener: (name: PropertyKey, oldValue: any, newValue: any) => void): this;
-	once(event: string | symbol, listener: Function): this {
+	once(event: string | symbol, listener: (...args: any[]) => void): this {
 		return super.once(event, listener);
 	}
 	removeListener(event: 'message', listener: (message: string, connection: WebSocketConnection) => void): this;
 	removeListener(event: 'close', listener: (code: number, connection: WebSocketConnection) => void): this;
+	removeListener(event: 'error', listener: (err: Error, connection: WebSocketConnection) => void): this;
 	removeListener(event: 'sessionUpdated', listener: (name: PropertyKey, oldValue: any, newValue: any) => void): this;
-	removeListener(event: string | symbol, listener: Function): this {
+	removeListener(event: string | symbol, listener: (...args: any[]) => void): this {
 		return super.removeListener(event, listener);
 	}
 }
