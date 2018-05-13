@@ -6,28 +6,28 @@ WebSocketサンプルとして作成した単純なChatアプリです。
 
 ## 環境
 * CentOS 7
-* Node.js v8.x
+* Node.js v10.x
 * nginx 1.10.x
 * TypeScript 2.x
-* WS 2.x
+* WS 5.x
     * Node-config 1.x
     * Log4js 1.x
-    * [json-rpc2-implementer](https://github.com/ktanakaj/json-rpc2-implementer) 0.3.x
-* Angular 4.x
+    * [json-rpc2-implementer](https://github.com/ktanakaj/json-rpc2-implementer) 0.4.x
+* Angular 6.x
     * webpack 3.x
-    * ngx-translate 7.x
-    * [simple-ng-websocket](https://github.com/ktanakaj/simple-ng-websocket) 0.1.x
-* Mocha 3.x
+    * ngx-translate 10.x
+    * [simple-ng-websocket](https://github.com/ktanakaj/simple-ng-websocket) 0.2.x
+* Mocha 5.x
     * Power-assert 1.x
 
 ### 対応ブラウザ
-* &gt;= Google Chrome Ver51.0.2704.106
+* &gt;= Google Chrome Ver66.0.3359.170
 
 ※ 他は未確認
 
 ### 開発環境
-* Vagrant 1.9.x - 仮想環境管理
-    * VirtualBox 5.1.x - 仮想環境
+* Vagrant 2.1.x - 仮想環境管理
+    * VirtualBox 5.2.x - 仮想環境
     * vagrant-vbguest - Vagrantプラグイン
 * Visual Studio Code - アプリ開発用エディター
 

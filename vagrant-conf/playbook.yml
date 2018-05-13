@@ -2,7 +2,7 @@
 - hosts: default
   vars:
     timezone: "Asia/Tokyo"
-    nodesource: https://rpm.nodesource.com/setup_8.x
+    nodesource: https://rpm.nodesource.com/setup_10.x
     app_nginx_conf_src: "/vagrant/vagrant-conf/nginx.conf"
     app_nginx_conf_dest: /etc/nginx/default.d/vagrant.conf
     app_svr_dir: "/vagrant/chat-svr"
@@ -24,7 +24,7 @@
           when: timedatectl_timezone.stdout == ""
       - block:
         - name: Check Node.js repository version
-          shell: yum info nodejs | grep -e "Version\s*:\s*[6-9].*$"
+          shell: yum info nodejs | grep -e "Version\s*:\s*1[0-9].*$"
           register: nodejs_repository_version
           check_mode: no
           changed_when: false
@@ -47,6 +47,8 @@
           npm: name=pm2 global=yes
         - name: Install "webpack" node.js package globally
           npm: name=webpack global=yes
+        - name: Install "webpack-cli" node.js package globally
+          npm: name=webpack-cli global=yes
         - name: Install "typescript" node.js package globally
           npm: name=typescript global=yes
         - name: Install "typedoc" node.js package globally
