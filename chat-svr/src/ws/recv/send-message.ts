@@ -32,4 +32,4 @@ module.exports = class {
 		msg.body = validationUtils.notFound(params.body);
 		this.session.room.sendMessage(msg);
 	}
-}
+};

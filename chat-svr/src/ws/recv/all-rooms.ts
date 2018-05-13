@@ -11,4 +11,4 @@ import { Room } from '../../services/room';
  */
 module.exports = function (): Room[] {
 	return roomManager.getRooms();
-}
+};

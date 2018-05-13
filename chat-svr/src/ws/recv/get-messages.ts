@@ -25,4 +25,4 @@ module.exports = class {
 		// 参加中のルームが保持しているメッセージ履歴を返す
 		return this.session.room.messages;
 	}
-}
+};

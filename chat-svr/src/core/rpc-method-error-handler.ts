@@ -61,4 +61,4 @@ export default function (err: any, event?: RpcInvokedEvent): any {
 			return next(newErr, ++i);
 		}
 	})(err);
-};
+}

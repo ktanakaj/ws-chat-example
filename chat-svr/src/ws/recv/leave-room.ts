@@ -24,4 +24,4 @@ module.exports = class {
 			this.session.room = null;
 		}
 	}
-}
+};

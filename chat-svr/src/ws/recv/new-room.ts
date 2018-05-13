@@ -18,4 +18,4 @@ module.exports = class {
 	invoke(params: { name: string }): Room {
 		return roomManager.createRoom(validationUtils.notFound(params.name));
 	}
-}
+};

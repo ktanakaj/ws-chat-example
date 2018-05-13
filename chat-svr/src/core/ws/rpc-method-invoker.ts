@@ -11,11 +11,11 @@ import { WebSocketRpcConnection } from './ws-rpc-connection';
  */
 export interface RpcInvokedEvent extends InvokedEvent {
 	/** RPCのID */
-	id?: number | string,
+	id?: number | string;
 	/** WebSocket/RPCコネクション */
-	connection?: WebSocketRpcConnection,
+	connection?: WebSocketRpcConnection;
 	/** メソッドクラスのインスタンス */
-	instance?: RpcInvokableClass,
+	instance?: RpcInvokableClass;
 }
 
 /**
@@ -23,13 +23,13 @@ export interface RpcInvokedEvent extends InvokedEvent {
  */
 export interface RpcInvokableClass {
 	/** メソッド */
-	invoke: Function,
+	invoke: Function;
 	/** RPCのID */
-	id?: number | string,
+	id?: number | string;
 	/** WebSocket/RPCコネクション */
-	connection?: WebSocketRpcConnection,
+	connection?: WebSocketRpcConnection;
 	/** セッション情報 */
-	session?: Object,
+	session?: Object;
 }
 
 /**

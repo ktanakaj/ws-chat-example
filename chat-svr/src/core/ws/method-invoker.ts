@@ -12,11 +12,11 @@ import objectUtils from '../utils/object-utils';
  */
 export interface InvokedEvent {
 	/** 実行するメソッド名 */
-	method: string,
+	method: string;
 	/** メソッドの引数 */
-	params?: any,
+	params?: any;
 	/** メソッドの実体 */
-	function?: Function,
+	function?: Function;
 }
 
 /**
@@ -27,7 +27,7 @@ export class MethodInvoker {
 	 * メソッドコールエラーのハンドラー。
 	 * ※ エラーを解消しない場合は再スローすること。デフォルトは再スローのみ。
 	 */
-	errorHandler: (err: any, event?: InvokedEvent) => any = (err) => { throw err };
+	errorHandler: (err: any, event?: InvokedEvent) => any = (err) => { throw err; };
 
 	/** メソッド本体のディレクトリ */
 	protected methodDir: string;

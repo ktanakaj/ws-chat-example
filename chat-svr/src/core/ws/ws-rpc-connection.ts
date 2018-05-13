@@ -11,7 +11,7 @@ import { WebSocketConnection, WebSocketConnectionOptions } from './ws-connection
  */
 export interface WebSocketRpcConnectionOptions extends WebSocketConnectionOptions {
 	/** メソッドコールのハンドラー */
-	methodHandler?: (method: string, params?: any, id?: number | string) => any,
+	methodHandler?: (method: string, params?: any, id?: number | string) => any;
 }
 
 /**

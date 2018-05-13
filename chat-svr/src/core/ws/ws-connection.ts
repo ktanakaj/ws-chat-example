@@ -14,15 +14,15 @@ const random = new Random();
  */
 export interface WebSocketConnectionOptions {
 	/** メッセージ受信イベント */
-	onmessage?: (message: string, connection: WebSocketConnection) => void,
+	onmessage?: (message: string, connection: WebSocketConnection) => void;
 	/** コネクション切断イベント */
-	onclose?: (code: number, connection: WebSocketConnection) => void,
+	onclose?: (code: number, connection: WebSocketConnection) => void;
 	/** コネクションエラーイベント */
-	onerror?: (err: Error, connection: WebSocketConnection) => void,
+	onerror?: (err: Error, connection: WebSocketConnection) => void;
 	/** 通信ロガー */
-	logger?: (level: string, message: string) => void,
+	logger?: (level: string, message: string) => void;
 	/** Pingでコネクション維持を行う場合その間隔 (ms) */
-	keepAliveTime?: number,
+	keepAliveTime?: number;
 }
 
 /**

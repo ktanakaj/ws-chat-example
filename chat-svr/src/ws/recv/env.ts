@@ -14,4 +14,4 @@ module.exports = function () {
 		environment: process.env.NODE_ENV,
 		version: packagejson['version'],
 	};
-}
+};
