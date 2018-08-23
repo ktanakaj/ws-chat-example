@@ -6,7 +6,7 @@ WebSocketサンプルとして作成した単純なChatアプリです。
 
 ## 環境
 * CentOS 7
-* Node.js v10.x
+* Node.js v8.x
 * nginx 1.10.x
 * TypeScript 3.x
 * WS 6.x

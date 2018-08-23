@@ -2,7 +2,7 @@
 - hosts: default
   vars:
     timezone: "Asia/Tokyo"
-    nodesource: https://rpm.nodesource.com/setup_10.x
+    nodesource: "https://rpm.nodesource.com/setup_8.x" # TODO: https://github.com/npm/npm/issues/20605 が直ったら10に上げる
     app_nginx_conf_src: "/vagrant/ansible/nginx.conf.j2"
     app_nginx_conf_dest: /etc/nginx/default.d/vagrant.conf
     app_svr_dir: "/vagrant/chat-svr"
@@ -24,7 +24,7 @@
           when: timedatectl_timezone.stdout == ""
       - block:
         - name: Check Node.js repository version
-          shell: yum info nodejs | grep -e "Version\s*:\s*1[0-9].*$"
+          shell: yum info nodejs | grep -e "Version\s*:\s*(1[0-9]|[8-9]).*$"
           register: nodejs_repository_version
           check_mode: no
           changed_when: false
