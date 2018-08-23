@@ -1,18 +1,21 @@
 ---
   log4js:
+    pm2: false
     appenders:
-      - type: "console"
-        category: "ws" # WebSocketログ
-      - type: "console"
-        category: "http" # 通信ログ
-      - type: "console"
-        category: "error" # エラーログ
-      - type: "console"
-        category: "debug" # デバッグログ
-      - type: "console" # コンソール
-    levels:
-      ws: "INFO"
-      http: "INFO"
-      error: "INFO"
-      debug: "INFO"
-    replaceConsole: false
+      stdout: # 標準出力
+        type: "console"
+      stderr: # 標準エラー出力
+        type: "stderr"
+    categories:
+      default:
+        appenders:
+          - "stdout"
+        level: "info"
+      ws:
+        appenders:
+          - "stdout"
+        level: "info"
+      error:
+        appenders:
+          - "stderr"
+        level: "debug"

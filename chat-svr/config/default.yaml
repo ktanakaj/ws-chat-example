@@ -3,31 +3,40 @@
     port: 3000
   keepAliveTime: 55000
   log4js:
+    pm2: true
     appenders:
-      - type: "datefile"
-        category: "ws" # WebSocketログ
+      stdout: # 標準出力
+        type: "console"
+      stderr: # 標準エラー出力
+        type: "stderr"
+      ws: # WebSocket通信ログ
+        type: "dateFile"
         filename: "/var/log/local/ws-chat-sample/ws.log"
         pattern: "-yyyy-MM-dd"
         backups: 10
-      - type: "datefile"
-        category: "http" # 通信ログ
-        filename: "/var/log/local/ws-chat-sample/http.log"
-        pattern: "-yyyy-MM-dd"
-        backups: 10
-      - type: "datefile"
-        category: "error" # エラーログ
+      error: # エラーログ
+        type: "dateFile"
         filename: "/var/log/local/ws-chat-sample/error.log"
         pattern: "-yyyy-MM-dd"
         maxLogSize: 107374182400 # 100MB
-      - type: "file"
-        category: "debug" # デバッグログ
+      debug: # デバッグログ
+        type: "file"
         filename: "/var/log/local/ws-chat-sample/debug.log"
         backups: 10
         maxLogSize: 10737418240 # 10MB
-      - type: "console" # コンソール
-    levels:
-      ws: "INFO"
-      http: "INFO"
-      error: "INFO"
-      debug: "DEBUG"
-    replaceConsole: true
+    categories:
+      default:
+        appenders:
+          - "stdout"
+          - "debug"
+        level: "debug"
+      ws:
+        appenders:
+          - "stdout"
+          - "ws"
+        level: "info"
+      error:
+        appenders:
+          - "stderr"
+          - "error"
+        level: "debug"
