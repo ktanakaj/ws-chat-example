@@ -1,6 +1,6 @@
 {
   "name": "chat-svr",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "private": true,
   "scripts": {
     "start": "pm2 start process.json",
@@ -21,32 +21,30 @@
   },
   "dependencies": {
     "@types/config": "^0.0.34",
-    "@types/log4js": "^0.0.32",
-    "@types/node": "^10.0.8",
+    "@types/node": "^10.7.1",
     "@types/random-js": "1.0.30",
-    "@types/source-map-support": "^0.4.0",
+    "@types/source-map-support": "^0.4.1",
     "@types/string": "0.0.29",
-    "@types/ws": "5.1.1",
-    "config": "^1.25.1",
+    "@types/ws": "^6.0.0",
+    "config": "^2.0.1",
     "debug": "~3.1.0",
-    "js-yaml": "^3.8.1",
+    "js-yaml": "^3.12.0",
     "json-rpc2-implementer": "^0.4.0",
-    "log4js": "^1.1.1",
+    "log4js": "^3.0.5",
     "random-js": "^1.0.8",
-    "source-map-support": "^0.5.5",
+    "source-map-support": "^0.5.9",
     "string": "^3.3.3",
-    "ws": "^5.1.1"
+    "ws": "^6.0.0"
   },
   "devDependencies": {
-    "@types/mocha": "^5.2.0",
+    "@types/mocha": "^5.2.5",
     "@types/power-assert": "^1.5.0",
-    "espower-typescript": "^8.1.3",
-    "mocha": "^5.1.1",
-    "node-pre-gyp": "^0.10.0",
-    "pm2": "^2.4.0",
-    "power-assert": "^1.5.0",
-    "tslint": "^5.9.1",
-    "typedoc": "^0.11.1",
-    "typescript": "^2.8.3"
+    "espower-typescript": "^9.0.0",
+    "mocha": "^5.2.0",
+    "pm2": "^3.0.3",
+    "power-assert": "^1.6.0",
+    "tslint": "^5.11.0",
+    "typedoc": "^0.12.0",
+    "typescript": "^3.0.1"
   }
 }

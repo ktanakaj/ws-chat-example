@@ -8,10 +8,10 @@ WebSocketサンプルとして作成した単純なChatアプリです。
 * CentOS 7
 * Node.js v10.x
 * nginx 1.10.x
-* TypeScript 2.x
-* WS 5.x
-    * Node-config 1.x
-    * Log4js 1.x
+* TypeScript 3.x
+* WS 6.x
+    * Node-config 2.x
+    * Log4js 3.x
     * [json-rpc2-implementer](https://github.com/ktanakaj/json-rpc2-implementer) 0.4.x
 * Angular 6.x
     * webpack 3.x
