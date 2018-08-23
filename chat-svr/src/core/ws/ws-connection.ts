@@ -13,12 +13,6 @@ const random = new Random();
  * WebSocketコネクションのオプション引数。
  */
 export interface WebSocketConnectionOptions {
-	/** メッセージ受信イベント */
-	onmessage?: (message: string, connection: WebSocketConnection) => void;
-	/** コネクション切断イベント */
-	onclose?: (code: number, connection: WebSocketConnection) => void;
-	/** コネクションエラーイベント */
-	onerror?: (err: Error, connection: WebSocketConnection) => void;
 	/** 通信ロガー */
 	logger?: (level: string, message: string) => void;
 	/** Pingでコネクション維持を行う場合その間隔 (ms) */
@@ -32,12 +26,12 @@ export class WebSocketConnection extends EventEmitter {
 	/** 生のWebSocket接続 */
 	ws: WebSocket;
 	/** 一意なコネクションID */
-	id: string = generateUniqueId();
+	public id: string = this.generateUniqueId();
 	/** 簡易セッション用オブジェクト */
-	session: Object;
+	public session: Object = this.makeSessionObject();
 
 	/** 通信ロガー */
-	logger: (level: string, message: string) => void;
+	public logger = (level: string, message: string) => console.log(message);
 
 	/**
 	 * WebSocketコネクションインスタンスを生成する。
@@ -47,27 +41,12 @@ export class WebSocketConnection extends EventEmitter {
 	constructor(ws: WebSocket, options: WebSocketConnectionOptions = {}) {
 		super();
 		this.ws = ws;
-		const self = this;
-
-		// セッションの変更をイベントととして登録
-		this.session = new Proxy({}, {
-			set(target, name: PropertyKey, value: any): boolean {
-				const old = target[name];
-				target[name] = value;
-				self.emit('sessionUpdated', name, old, value);
-				return true;
-			}
-		});
 
 		// イベント系はプロパティで登録可能だが、ロガーだけはコンストラクタでも使用するため、
 		// オプションでも指定できるようにする
-		if (options.onmessage) {
-			this.on('message', options.onmessage);
+		if (options.logger) {
+			this.logger = options.logger;
 		}
-		if (options.onclose) {
-			this.on('close', options.onclose);
-		}
-		this.logger = options.logger || (() => (level: string, message: string) => console.log(message));
 
 		// 接続開始ログ
 		this.logger('info', this.formatAccessLog('CONNECTION'));
@@ -97,7 +76,9 @@ export class WebSocketConnection extends EventEmitter {
 		});
 
 		// 死活監視を開始する
-		this.startKeepAlive(options.keepAliveTime || 0);
+		if (options.keepAliveTime > 0) {
+			this.startKeepAlive(options.keepAliveTime);
+		}
 	}
 
 	/**
@@ -131,9 +112,6 @@ export class WebSocketConnection extends EventEmitter {
 		// コネクション維持を行う場合、一定間隔でpingを送信する
 		// ※ JavaScriptのクライアントAPIはpingを自分から送信できないのでサーバー側から送る
 		const self = this;
-		if (keepAliveTime <= 0) {
-			return;
-		}
 		function keepAlive() {
 			if (self.ws.readyState === WebSocket.OPEN) {
 				self.ping();
@@ -149,6 +127,39 @@ export class WebSocketConnection extends EventEmitter {
 	ping(): void {
 		this.ws.ping();
 		this.logger('trace', this.formatAccessLog('SEND PING'));
+	}
+
+	/**
+	 * 一意なIDを生成する。
+	 * @returns 一意なID。
+	 */
+	protected generateUniqueId(): string {
+		// ユーザーには見せないログや内部処理用のIDの想定
+		// 被らなくて見分けやすければいいので、4桁の適当な英字+タイムスタンプ
+		return random.string(4, 'abcdefghijklmnopqrstuvwxyz') + Date.now();
+	}
+
+	/**
+	 * 簡易セッション用のオブジェクトを生成する。
+	 * @returns セッション用オブジェクト。
+	 */
+	protected makeSessionObject(): Object {
+		// 値が変更されたらイベントととして通知するオブジェクトを生成
+		const self = this;
+		return new Proxy({}, {
+			set(target, name: PropertyKey, value: any): boolean {
+				const old = target[name];
+				target[name] = value;
+				self.emit('sessionUpdated', name, old, value);
+				return true;
+			},
+			deleteProperty(target, name: PropertyKey): boolean {
+				const old = target[name];
+				delete target[name];
+				self.emit('sessionUpdated', name, old, null);
+				return true;
+			}
+		});
 	}
 
 	/**
@@ -195,16 +206,4 @@ export class WebSocketConnection extends EventEmitter {
 	removeListener(event: string | symbol, listener: (...args: any[]) => void): this {
 		return super.removeListener(event, listener);
 	}
-}
-
-/**
- * 一意なIDを生成する。
- * @returns 一意なID。
- */
-function generateUniqueId(): string {
-	// ユーザーには見せないログや内部処理用のIDの想定
-	// 被らなくて見分けやすければいいので、4桁の適当な英字+タイムスタンプ
-	// ※ @types の1.0.8現在、何故か引数が逆になっているのでanyで回避
-	const r: any = random;
-	return r.string(4, 'abcdefghijklmnopqrstuvwxyz') + Date.now();
 }

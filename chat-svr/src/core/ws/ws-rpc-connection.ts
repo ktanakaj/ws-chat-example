@@ -31,12 +31,16 @@ export class WebSocketRpcConnection extends WebSocketConnection {
 	 */
 	constructor(ws: WebSocket, options: WebSocketRpcConnectionOptions = {}) {
 		super(ws, options);
-		this.methodHandler = options.methodHandler;
 		this.rpc = new JsonRpc2Implementer();
-		this.on('message', (message) => this.rpc.receive(message).catch(console.error));
-		this.rpc.sender = (message) => this.send(message, false);
-		this.rpc.methodHandler = (method, params, id) => {
-			return this.methodHandler(method, params, id);
+		this.rpc.methodHandler = options.methodHandler;
+		this.on('message', (message) => this.rpc.receive(message).catch((err) => this.logger('error', this.formatAccessLog('RECEIVE ERROR', err))));
+		this.rpc.sender = (message) => {
+			// コネクション切断済みで返せない場合はワーニング
+			if (this.ws.readyState !== WebSocket.OPEN) {
+				this.logger('debug', this.formatAccessLog('SEND ERROR', `Response can't be sent client because this connection was already closed. ${message}`));
+			} else {
+				this.send(message, false).catch((err) => this.logger('error', this.formatAccessLog('SEND ERROR', err)));
+			}
 		};
 	}
 
@@ -46,7 +50,7 @@ export class WebSocketRpcConnection extends WebSocketConnection {
 	 * @param params 引数。
 	 * @return メソッドの処理結果。
 	 */
-	call(method: string, params: any): Promise<any> {
+	call<T>(method: string, params: any): Promise<T> {
 		return this.rpc.call(method, params);
 	}
 
