@@ -18,7 +18,7 @@ Vagrant.configure(2) do |config|
 
   # ゲストPCにansibleをインストールし共有フォルダのプレイブックを実行
   config.vm.provision "ansible_local" do |ansible|
-    ansible.playbook = "vagrant-conf/playbook.yml"
+    ansible.playbook = "ansible/playbook.yml"
     ansible.provisioning_path = "/vagrant/"
   end
 

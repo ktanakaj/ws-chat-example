@@ -36,7 +36,7 @@ WebSocketサンプルとして作成した単純なChatアプリです。
     * chat-svr - Node.js Webサーバーソース
         * config - アプリ設定
     * chat-web - Angular Webアプリソース
-    * vagrant-conf - Vagrant関連ファイル
+    * ansible - Ansible関連ファイル
 
 ## 環境構築手順
 1. Vagrantをインストールした後、ファイル一式をVMのフォルダとする場所に展開。
@@ -66,7 +66,7 @@ Webアプリの操作用に、以下のようなサーバーコマンドを用�
     * `npm run watch` - アプリのビルド（ファイル更新監視）
     * `npm run doc` - アプリのAPIドキュメント生成
     * `npm test` - アプリのユニットテスト実行
-    * `npm run tslint` - アプリの静的解析ツールの実行
+    * `npm run lint` - アプリの静的解析ツールの実行
     * `npm run clean` - 全ビルド生成物の削除
 
 ## その他

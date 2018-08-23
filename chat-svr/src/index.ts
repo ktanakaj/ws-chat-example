@@ -11,5 +11,5 @@ const packagejson = require('../package.json');
 log4js.configure(config['log4js']);
 
 // WebSocketサーバを起動
-createServer(config['websocket'], "lib/ws");
+createServer(config['websocket'], "dist/ws");
 log4js.getLogger('debug').info(`${packagejson['name']}@${packagejson['version']} started`);

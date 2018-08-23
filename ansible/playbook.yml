@@ -3,7 +3,7 @@
   vars:
     timezone: "Asia/Tokyo"
     nodesource: https://rpm.nodesource.com/setup_10.x
-    app_nginx_conf_src: "/vagrant/vagrant-conf/nginx.conf"
+    app_nginx_conf_src: "/vagrant/ansible/nginx.conf.j2"
     app_nginx_conf_dest: /etc/nginx/default.d/vagrant.conf
     app_svr_dir: "/vagrant/chat-svr"
     app_web_dir: "/vagrant/chat-web"
@@ -61,7 +61,7 @@
           npm: name=wscat global=yes
       - block:
         - name: Copy the web app configuration to nginx
-          copy: src={{ app_nginx_conf_src }} dest={{ app_nginx_conf_dest }} force=no
+          template: src={{ app_nginx_conf_src }} dest={{ app_nginx_conf_dest }} force=yes
         - name: Action to enable service nginx
           service: name=nginx state=restarted enabled=yes
       - block:
@@ -75,7 +75,7 @@
           service: name=firewalld state=reloaded enabled=yes
       - block:
         - name: Create the web application logging directory
-          file: path={{ app_log_dir }} state=directory owner=root group=root mode=1777
+          file: path={{ app_log_dir }} state=directory owner=vagrant group=vagrant mode=0755
       - block:
         - name: Check "pm2" service registration
           shell: systemctl status pm2.service | grep -e "enabled"
@@ -88,6 +88,10 @@
           when: pm2_service_loaded.stdout == ""
         - name: Action to enable service pm2
           service: name=pm2-vagrant state=started enabled=yes
+        - name: Install "pm2-intercom" module to pm2
+          shell: pm2 install pm2-intercom
+          when: pm2_service_loaded.stdout == ""
+          become: false
       become: true
 
     - block:

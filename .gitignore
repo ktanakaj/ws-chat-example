@@ -17,12 +17,12 @@ node_modules
 Temp
 Obj
 doc/*.mwb.*
-chat-svr/lib
-chat-svr/out
+chat-svr/dist
+chat-svr/doc
 chat-svr/config/local.yaml
 chat-web/public/bundle.js
 chat-web/public/bundle.js.map
-chat-web/out
+chat-web/doc
 chat-web/obj
 chat-web/bin
 !.gitkeep

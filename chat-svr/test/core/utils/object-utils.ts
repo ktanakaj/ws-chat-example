@@ -2,7 +2,7 @@
  * @file object-utils.tsのテスト。
  */
 import * as assert from 'power-assert';
-import objectUtils from '../../../core/utils/object-utils';
+import objectUtils from '../../../src/core/utils/object-utils';
 
 describe('object-utils', () => {
 	describe('#get()', () => {
