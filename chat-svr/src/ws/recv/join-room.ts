@@ -12,7 +12,7 @@ import { Room } from '../../services/room';
 /**
  * ルーム参加メソッドクラス。
  */
-module.exports = class {
+export default class {
 	/** WebSocket/RPCコネクション */
 	connection: WebSocketRpcConnection;
 	/** セッション情報 */
@@ -47,4 +47,4 @@ module.exports = class {
 
 		return room;
 	}
-};
+}

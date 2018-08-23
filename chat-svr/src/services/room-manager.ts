@@ -3,7 +3,6 @@
  * @module ./services/room-manager
  */
 import { EventEmitter } from 'events';
-import { WebSocketRpcConnection } from '../core/ws/ws-rpc-connection';
 import { Room } from './room';
 
 /**

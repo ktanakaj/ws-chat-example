@@ -55,7 +55,8 @@ export function createServer(options: WebSocket.ServerOptions, methodDir: string
 	// 送信メソッドディレクトリの初期化処理を呼び出し
 	const senders = fileUtils.requireDirectoriesRecursiveSync(path.join(methodDir, 'send'));
 	for (let p in senders) {
-		const sender = new senders[p];
+		const clazz = senders[p]['default'] || senders[p];
+		const sender = new clazz();
 		sender['connections'] = connections;
 		sender['init']();
 	}

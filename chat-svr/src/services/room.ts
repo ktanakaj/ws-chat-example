@@ -3,9 +3,7 @@
  * @module ./services/room
  */
 import { EventEmitter } from 'events';
-import * as log4js from 'log4js';
 import { Message } from './message';
-const logger = log4js.getLogger('error');
 
 /**
  * ルームクラス。

@@ -8,7 +8,7 @@ import { Room } from '../../services/room';
 /**
  * ルーム離脱メソッドクラス。
  */
-module.exports = class {
+export default class {
 	/** WebSocket/RPCコネクション */
 	connection: WebSocketRpcConnection;
 	/** セッション情報 */
@@ -24,4 +24,4 @@ module.exports = class {
 			this.session.room = null;
 		}
 	}
-};
+}

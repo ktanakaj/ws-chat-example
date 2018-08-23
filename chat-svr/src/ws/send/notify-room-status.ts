@@ -11,7 +11,7 @@ const logger = log4js.getLogger('error');
 /**
  * ルーム更新通知メソッドクラス。
  */
-module.exports = class {
+export default class {
 	/** コネクション一覧マップ */
 	connections: WebSocketConnectionMap;
 
@@ -29,4 +29,4 @@ module.exports = class {
 			}
 		});
 	}
-};
+}

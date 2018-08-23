@@ -11,7 +11,7 @@ import { Message } from '../../services/message';
 /**
  * メッセージ送信クラス。
  */
-module.exports = class {
+export default class {
 	/** WebSocket/RPCコネクション */
 	connection: WebSocketRpcConnection;
 	/** セッション情報 */
@@ -32,4 +32,4 @@ module.exports = class {
 		msg.body = validationUtils.notFound(params.body);
 		this.session.room.sendMessage(msg);
 	}
-};
+}

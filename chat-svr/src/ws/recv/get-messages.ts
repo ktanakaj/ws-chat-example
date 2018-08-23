@@ -9,7 +9,7 @@ import { Message } from '../../services/message';
 /**
  * メッセージ履歴取得メソッドクラス。
  */
-module.exports = class {
+export default class {
 	/** セッション情報 */
 	session: { room?: Room };
 
@@ -25,4 +25,4 @@ module.exports = class {
 		// 参加中のルームが保持しているメッセージ履歴を返す
 		return this.session.room.messages;
 	}
-};
+}

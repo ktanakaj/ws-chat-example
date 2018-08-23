@@ -9,6 +9,6 @@ import { Room } from '../../services/room';
  * ルーム一覧を取得する。
  * @return ルーム一覧。
  */
-module.exports = function (): Room[] {
+export default function (): Room[] {
 	return roomManager.getRooms();
-};
+}

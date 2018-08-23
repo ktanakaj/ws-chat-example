@@ -9,7 +9,7 @@ import { Room } from '../../services/room';
 /**
  * ルーム作成メソッドクラス。
  */
-module.exports = class {
+export default class {
 	/**
 	 * ルームを作成する。
 	 * @param params ルーム情報。
@@ -18,4 +18,4 @@ module.exports = class {
 	invoke(params: { name: string }): Room {
 		return roomManager.createRoom(validationUtils.notFound(params.name));
 	}
-};
+}
