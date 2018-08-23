@@ -112,10 +112,10 @@ function range(value: any, minValue: number, maxValue: number, name?: string): n
 }
 
 export default {
-	ValidationError: ValidationError,
-	notFound: notFound,
-	toNumber: toNumber,
-	min: min,
-	max: max,
-	range: range,
+	ValidationError,
+	notFound,
+	toNumber,
+	min,
+	max,
+	range,
 };
