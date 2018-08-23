@@ -41,22 +41,8 @@
         - name: Install the latest version of Git
           yum: name=git state=latest
       - block:
-        - name: Install "mocha" node.js package globally
-          npm: name=mocha global=yes
         - name: Install "pm2" node.js package globally
           npm: name=pm2 global=yes
-        - name: Install "webpack" node.js package globally
-          npm: name=webpack global=yes
-        - name: Install "webpack-cli" node.js package globally
-          npm: name=webpack-cli global=yes
-        - name: Install "typescript" node.js package globally
-          npm: name=typescript global=yes
-        - name: Install "typedoc" node.js package globally
-          npm: name=typedoc global=yes
-        - name: Install "tslint" node.js package globally
-          npm: name=tslint global=yes
-        - name: Install "node-pre-gyp" node.js package globally
-          npm: name=node-pre-gyp global=yes
         - name: Install "wscat" node.js package globally
           npm: name=wscat global=yes
       - block:
