@@ -7,7 +7,7 @@ import { Room } from '../../services/room';
 import { Message } from '../../services/message';
 
 /**
- * メッセージ履歴取得メソッドクラス。
+ * メッセージ履歴取得クラス。
  */
 export default class {
 	/** セッション情報 */

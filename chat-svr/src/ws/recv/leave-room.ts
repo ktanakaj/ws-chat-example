@@ -6,7 +6,7 @@ import { WebSocketRpcConnection } from '../../core/ws/ws-rpc-connection';
 import { Room } from '../../services/room';
 
 /**
- * ルーム離脱メソッドクラス。
+ * ルーム離脱クラス。
  */
 export default class {
 	/** WebSocket/RPCコネクション */

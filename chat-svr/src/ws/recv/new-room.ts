@@ -7,7 +7,7 @@ import roomManager from '../../services/room-manager';
 import { Room } from '../../services/room';
 
 /**
- * ルーム作成メソッドクラス。
+ * ルーム作成クラス。
  */
 export default class {
 	/**

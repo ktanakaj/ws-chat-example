@@ -9,7 +9,7 @@ import roomManager from '../../services/room-manager';
 import { Room } from '../../services/room';
 
 /**
- * ルーム参加メソッドクラス。
+ * ルーム参加クラス。
  */
 export default class {
 	/** WebSocket/RPCコネクション */

@@ -25,7 +25,7 @@ const WebSocketServer = WebSocket.Server;
 export function createServer(options: WebSocket.ServerOptions, methodDir: string): void {
 	const wss = new WebSocketServer(options);
 
-	// メソッドディレクトリの実行インスタンスを作成
+	// 受信メソッドディレクトリの実行インスタンスを作成
 	const invoker = new RpcMethodInvoker(path.join(methodDir, 'recv'));
 	invoker.before = preprocessInvoke;
 
@@ -50,13 +50,15 @@ export function createServer(options: WebSocket.ServerOptions, methodDir: string
 	// WebSocketサーバーのエラーハンドラーを登録
 	wss.on('error', (err) => errorLogger.error(err));
 
-	// 送信メソッドディレクトリの初期化処理を呼び出し
+	// 送信メソッドディレクトリを読み込み
+	// ※ 受信と違って送信はうまい共通化手段が浮かばないが、サービス側から参照するのは嫌なので、
+	//    送信ディレクトリとしてインポート等だけして各々のファイルで勝手にイベントに登録なりしてもらう。
 	const senders = fileUtils.requireDirectoriesRecursiveSync(path.join(methodDir, 'send'));
 	for (let p in senders) {
+		// ※ クラスが定義されていたら、newしてconnectionsだけ渡す
 		const clazz = senders[p]['default'] || senders[p];
 		const sender = new clazz();
 		sender['connections'] = connections;
-		sender['init']();
 	}
 }
 

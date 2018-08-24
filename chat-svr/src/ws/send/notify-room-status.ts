@@ -9,24 +9,35 @@ import roomManager from '../../services/room-manager';
 const logger = log4js.getLogger('error');
 
 /**
- * ルーム更新通知メソッドクラス。
+ * ルーム更新通知クラス。
  */
 export default class {
 	/** コネクション一覧マップ */
-	connections: WebSocketConnectionMap;
+	connections: WebSocketConnectionMap<WebSocketRpcConnection>;
 
 	/**
-	 * ルーム管理にルーム更新通知イベントの送信処理を登録する。
+	 * インスタンス生成時に、ルーム管理のイベントに送信処理を登録する。
 	 */
-	init(): void {
-		roomManager.on('notifyRoomStatus', (params, connectionIds) => {
-			for (let id of connectionIds) {
-				let conn = <WebSocketRpcConnection>this.connections.get(id);
-				if (conn) {
-					conn.notice('notifyRoomStatus', params)
-						.catch((e) => logger.error(e));
+	constructor() {
+		roomManager.on('notifyRoomStatus', (params, connectionIds) => this.invoke(params, connectionIds).catch(logger.error));
+	}
+
+	/**
+	 * ルームが更新されたことを通知する。
+	 * @param params メッセージ情報。
+	 * @param connectionIds 送信対象コネクションID配列。
+	 * @returns 処理状態。
+	 */
+	async invoke(params: any, connectionIds: string[]): Promise<void> {
+		for (let id of connectionIds) {
+			let conn = this.connections.get(id);
+			if (conn) {
+				try {
+					await conn.notice('notifyRoomStatus', params);
+				} catch (e) {
+					logger.error(e);
 				}
 			}
-		});
+		}
 	}
 }
