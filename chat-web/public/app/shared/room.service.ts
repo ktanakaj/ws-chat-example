@@ -48,7 +48,7 @@ export class RoomService extends EventEmitter {
 	 * @throws 通信エラーの場合。
 	 */
 	create(name: string): Promise<Room> {
-		return this.rpcService.call('newRoom', { name: name });
+		return this.rpcService.call('newRoom', { name });
 	}
 
 	/**
@@ -58,7 +58,7 @@ export class RoomService extends EventEmitter {
 	 * @throws 通信エラーの場合。
 	 */
 	join(roomId: number): Promise<Room> {
-		return this.rpcService.call('joinRoom', { roomId: roomId });
+		return this.rpcService.call('joinRoom', { roomId });
 	}
 
 	/**

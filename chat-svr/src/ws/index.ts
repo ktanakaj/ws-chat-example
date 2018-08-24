@@ -6,9 +6,9 @@ import * as path from 'path';
 import * as WebSocket from 'ws';
 import * as config from 'config';
 import * as log4js from 'log4js';
+import * as Ajv from 'ajv';
 import { JsonRpcError, ErrorCode } from 'json-rpc2-implementer';
 import fileUtils from '../core/utils/file-utils';
-import { ValidationError } from '../core/utils/validation-utils';
 import { WebSocketRpcConnection } from '../core/ws/ws-rpc-connection';
 import { RpcMethodInvoker, RpcInvokableClass } from '../core/ws/rpc-method-invoker';
 import { WebSocketConnectionMap } from '../core/ws/ws-connection-map';
@@ -72,6 +72,14 @@ function preprocessInvoke(params: any, instance?: RpcInvokableClass<WebSocketRpc
 	if (instance) {
 		// 利便性のためsessionを直下にもコピー
 		instance['session'] = instance.connection.session;
+
+		// スキーマ定義を元にバリデーション実施
+		if (instance['schema']) {
+			const ajv = new Ajv();
+			if (!ajv.validate(instance['schema'], params)) {
+				throw new BadRequestError(ajv.errors[0].message, ajv.errors);
+			}
+		}
 	}
 	return params;
 }
@@ -85,8 +93,6 @@ function handleInvokerError(err: any): void {
 	let rpcError: JsonRpcError = null;
 	if (err instanceof JsonRpcError) {
 		rpcError = err;
-	} else if (err instanceof ValidationError) {
-		rpcError = new BadRequestError(err.message, err);
 	} else {
 		rpcError = new InternalServerError(err.message || err, err);
 	}

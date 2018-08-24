@@ -3,7 +3,6 @@
  * @module ./ws/recv/join-room
  */
 import { BadRequestError } from '../../core/errors';
-import validationUtils from '../../core/utils/validation-utils';
 import { WebSocketRpcConnection } from '../../core/ws/ws-rpc-connection';
 import roomManager from '../../services/room-manager';
 import { Room } from '../../services/room';
@@ -17,6 +16,17 @@ export default class {
 	/** セッション情報 */
 	session: { room?: Room };
 
+	/** リクエストパラメータJSONスキーマ定義 */
+	schema = {
+		type: 'object',
+		required: [
+			'roomId',
+		],
+		properties: {
+			roomId: { type: 'integer' },
+		},
+	};
+
 	/**
 	 * ルームに参加する。
 	 * @param params 参加情報。
@@ -24,7 +34,7 @@ export default class {
 	 */
 	invoke(params: { roomId: number }): Room {
 		// ルームを取得&存在チェック
-		const room = roomManager.getRoom(validationUtils.toNumber(params.roomId));
+		const room = roomManager.getRoom(params.roomId);
 		if (!room) {
 			throw new BadRequestError(`roomId=${params.roomId} is not found`);
 		}

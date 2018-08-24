@@ -3,7 +3,6 @@
  * @module ./ws/recv/send-message
  */
 import { BadRequestError } from '../../core/errors';
-import validationUtils from '../../core/utils/validation-utils';
 import { WebSocketRpcConnection } from '../../core/ws/ws-rpc-connection';
 import { Room } from '../../services/room';
 import { Message } from '../../services/message';
@@ -17,6 +16,19 @@ export default class {
 	/** セッション情報 */
 	session: { room?: Room };
 
+	/** リクエストパラメータJSONスキーマ定義 */
+	schema = {
+		type: 'object',
+		required: [
+			'name',
+			'body',
+		],
+		properties: {
+			name: { type: 'string', minLength: 1 },
+			body: { type: 'string', minLength: 1 },
+		},
+	};
+
 	/**
 	 * メッセージを送信する。
 	 * @param メッセージ情報。
@@ -28,8 +40,8 @@ export default class {
 		}
 		// メッセージを作成して送信
 		const msg = new Message();
-		msg.name = validationUtils.notFound(params.name);
-		msg.body = validationUtils.notFound(params.body);
+		msg.name = params.name;
+		msg.body = params.body;
 		this.session.room.sendMessage(msg);
 	}
 }

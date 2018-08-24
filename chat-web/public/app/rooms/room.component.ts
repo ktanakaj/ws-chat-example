@@ -52,7 +52,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 	 * @return 処理状態。
 	 */
 	async ngOnInit(): Promise<void> {
-		this.room = await this.roomService.join(this.route.snapshot.params['id']);
+		this.room = await this.roomService.join(Number(this.route.snapshot.params['id']));
 		this.messages = await this.roomService.getMessages();
 	}
 
