@@ -2,7 +2,7 @@
  * メッセージ送信メソッドのモジュール。
  * @module ./ws/recv/send-message
  */
-import { AppError } from '../../core/app-error';
+import { BadRequestError } from '../../core/errors';
 import validationUtils from '../../core/utils/validation-utils';
 import { WebSocketRpcConnection } from '../../core/ws/ws-rpc-connection';
 import { Room } from '../../services/room';
@@ -24,7 +24,7 @@ export default class {
 	invoke(params: { name: string, body: string }): void {
 		// 未参加の場合はエラー
 		if (!this.session.room) {
-			throw new AppError();
+			throw new BadRequestError('room session is not found');
 		}
 		// メッセージを作成して送信
 		const msg = new Message();

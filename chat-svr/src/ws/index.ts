@@ -1,20 +1,18 @@
 /**
- * サーバの起動モジュール。
- *
- * このディレクトリには、アプリ全体で共通的な仕組みや設定を記述する。
- * アプリ固有のビジネスロジックは可能な限り含めない。
- * @module ./core
+ * ChatサンプルアプリWebSocketサーバの起動モジュール。
+ * @module ./ws
  */
 import * as path from 'path';
 import * as WebSocket from 'ws';
 import * as config from 'config';
 import * as log4js from 'log4js';
 import { JsonRpcError, ErrorCode } from 'json-rpc2-implementer';
-import fileUtils from './utils/file-utils';
-import { ValidationError } from './utils/validation-utils';
-import { WebSocketRpcConnection } from './ws/ws-rpc-connection';
-import { RpcMethodInvoker, RpcInvokableClass } from './ws/rpc-method-invoker';
-import { WebSocketConnectionMap } from './ws/ws-connection-map';
+import fileUtils from '../core/utils/file-utils';
+import { ValidationError } from '../core/utils/validation-utils';
+import { WebSocketRpcConnection } from '../core/ws/ws-rpc-connection';
+import { RpcMethodInvoker, RpcInvokableClass } from '../core/ws/rpc-method-invoker';
+import { WebSocketConnectionMap } from '../core/ws/ws-connection-map';
+import { BadRequestError, InternalServerError } from '../core/errors';
 const wsLogger = log4js.getLogger('ws');
 const errorLogger = log4js.getLogger('error');
 const WebSocketServer = WebSocket.Server;
@@ -86,9 +84,9 @@ function handleInvokerError(err: any): void {
 	if (err instanceof JsonRpcError) {
 		rpcError = err;
 	} else if (err instanceof ValidationError) {
-		rpcError = new JsonRpcError(ErrorCode.InvalidParams);
+		rpcError = new BadRequestError(err.message, err);
 	} else {
-		rpcError = JsonRpcError.convert(err);
+		rpcError = new InternalServerError(err.message || err, err);
 	}
 
 	// エラーの内容によってログ出力を制御する。

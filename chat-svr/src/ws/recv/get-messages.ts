@@ -2,7 +2,7 @@
  * メッセージ履歴取得メソッドのモジュール。
  * @module ./ws/recv/get-messages
  */
-import { AppError } from '../../core/app-error';
+import { BadRequestError } from '../../core/errors';
 import { Room } from '../../services/room';
 import { Message } from '../../services/message';
 
@@ -20,7 +20,7 @@ export default class {
 	invoke(): Message[] {
 		// 未参加の場合はエラー
 		if (!this.session.room) {
-			throw new AppError();
+			throw new BadRequestError('room session is not found');
 		}
 		// 参加中のルームが保持しているメッセージ履歴を返す
 		return this.session.room.messages;

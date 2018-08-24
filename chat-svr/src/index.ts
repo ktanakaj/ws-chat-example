@@ -4,7 +4,7 @@
 import * as config from 'config';
 import * as log4js from 'log4js';
 import 'source-map-support/register';
-import { createServer } from './core';
+import { createServer } from './ws';
 const packagejson = require('../package.json');
 
 // log4jsを初期設定

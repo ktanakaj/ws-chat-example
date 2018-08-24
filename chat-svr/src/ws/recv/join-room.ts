@@ -2,8 +2,7 @@
  * ルーム参加メソッドのモジュール。
  * @module ./ws/recv/join-room
  */
-import { ErrorCode } from 'json-rpc2-implementer';
-import { AppError } from '../../core/app-error';
+import { BadRequestError } from '../../core/errors';
 import validationUtils from '../../core/utils/validation-utils';
 import { WebSocketRpcConnection } from '../../core/ws/ws-rpc-connection';
 import roomManager from '../../services/room-manager';
@@ -27,7 +26,7 @@ export default class {
 		// ルームを取得&存在チェック
 		const room = roomManager.getRoom(validationUtils.toNumber(params.roomId));
 		if (!room) {
-			throw new AppError(ErrorCode.InvalidParams);
+			throw new BadRequestError(`roomId=${params.roomId} is not found`);
 		}
 
 		// 既に参加中の場合は退出
