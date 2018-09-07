@@ -3,7 +3,7 @@
  * @module ./core/ws/method-invoker
  */
 import * as path from 'path';
-import * as S from 'string';
+import * as _ from 'lodash';
 import fileUtils from '../utils/file-utils';
 
 /**
@@ -23,7 +23,7 @@ export class MethodInvoker {
 		const baseDir = path.join(path.resolve(methodDir), './');
 		const funcs = fileUtils.requireDirectoriesRecursiveSync(baseDir);
 		for (let p in funcs) {
-			this.methods.set(S(p.replace(baseDir, "").replace(/\.[jt]s$/, "")).camelize().s, funcs[p]['default'] || funcs[p]);
+			this.methods.set(_.camelCase(p.replace(baseDir, "").replace(/\.[jt]s$/, "")), funcs[p]['default'] || funcs[p]);
 		}
 	}
 
