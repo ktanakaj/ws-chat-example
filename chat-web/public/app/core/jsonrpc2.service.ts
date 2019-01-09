@@ -28,6 +28,8 @@ export class JsonRpc2Service {
 		this.rpc.methodHandler = (method, params, id) => {
 			return this.callMethodHandlers(method, params, id);
 		};
+		ngws.on('close', (ev) => setTimeout(() => ngws.connect(), 1000));
+		ngws.on('error', (ev) => ngws.close());
 	}
 
 	/**
@@ -57,7 +59,7 @@ export class JsonRpc2Service {
 	 * @param id ID。
 	 * @returns 処理結果。エラーの場合は例外を投げる。
 	 */
-	protected callMethodHandlers(method, params, id) {
+	protected callMethodHandlers(method, params, id): void {
 		// ※ 複数のハンドラーを登録可能だが、最初に実行されたメソッドの結果を返す
 		for (let handler of this.methodHandlers) {
 			try {

@@ -1,6 +1,6 @@
 {
   "name": "chat-svr",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "private": true,
   "scripts": {
     "start": "pm2 start process.json",

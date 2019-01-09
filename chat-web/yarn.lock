@@ -3242,10 +3242,10 @@ signal-exit@^3.0.0, signal-exit@^3.0.2:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
   integrity sha1-tf3AjxKH6hF4Yo5BXiUTK3NkbG0=
 
-simple-ng-websocket@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/simple-ng-websocket/-/simple-ng-websocket-0.2.0.tgz#cc8840f4e1524b200f14260ba0a008b16df593ad"
-  integrity sha1-zIhA9OFSSyAPFCYLoKAIsW31k60=
+simple-ng-websocket@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/simple-ng-websocket/-/simple-ng-websocket-0.2.1.tgz#e694da37e923e33c6df21be0f1f08f559fab476a"
+  integrity sha512-67AUg951xSc+AkH7NWZyku6m+Kb82OexFK/e5vTZ6Lx1Q1GxqOx5hzTNoJWuoEFQH2P96wZTkDmZNjNtkqGXbQ==
   dependencies:
     "@angular/core" ">=4.0.0"
     reflect-metadata ">=0.1.0"

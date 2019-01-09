@@ -6,8 +6,8 @@ WebSocketサンプルとして作成した単純なChatアプリです。
 
 ## 環境
 * CentOS 7
-* Node.js v8.x
-* nginx 1.10.x
+* Node.js v10.x
+* nginx 1.12.x
 * TypeScript 3.x
 * WS 6.x
     * Node-config 2.x
@@ -20,13 +20,13 @@ WebSocketサンプルとして作成した単純なChatアプリです。
 * Mocha 5.x
     * Power-assert 1.x
 
-### 対応ブラウザ
-* &gt;= Google Chrome Ver66.0.3359.170
+### 動作確認ブラウザ
+* Google Chrome Ver71.0
 
 ※ 他は未確認
 
 ### 開発環境
-* Vagrant 2.1.x - 仮想環境管理
+* Vagrant 2.2.x - 仮想環境管理
     * VirtualBox 5.2.x - 仮想環境
     * vagrant-vbguest - Vagrantプラグイン
 * Visual Studio Code - アプリ開発用エディター
