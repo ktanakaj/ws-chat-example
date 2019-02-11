@@ -7,7 +7,7 @@
     app_nginx_conf_dest: /etc/nginx/default.d/vagrant.conf
     app_svr_dir: "/vagrant/chat-svr"
     app_web_dir: "/vagrant/chat-web"
-    app_log_dir: /var/log/local/ws-chat-sample
+    app_log_dir: /var/log/local/ws-chat-example
     app_port: 3000
     build_target: build
   tasks:

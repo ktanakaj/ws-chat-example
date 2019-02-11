@@ -70,8 +70,8 @@ Webアプリの操作用に、以下のようなサーバーコマンドを用�
     * `npm run clean` - 全ビルド生成物の削除
 
 ## その他
-各種ログは `/var/log/local/ws-chat-sample` 下に出力されます。
+各種ログは `/var/log/local/ws-chat-example` 下に出力されます。
 アクセスログ、デバッグログ、エラーログを出力します。
 
 ## ライセンス
-[MIT](https://github.com/ktanakaj/ws-chat-sample/blob/master/LICENSE)
+[MIT](https://github.com/ktanakaj/ws-chat-example/blob/master/LICENSE)
