@@ -31,6 +31,8 @@ WebSocketサンプルとして作成した単純なChatアプリです。
     * vagrant-vbguest - Vagrantプラグイン
 * Visual Studio Code - アプリ開発用エディター
 
+※ Hyper-Vでも動作可
+
 ## フォルダ構成
 * VMルートフォルダ
     * chat-svr - Node.js Webサーバーソース

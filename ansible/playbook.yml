@@ -2,7 +2,7 @@
 - hosts: default
   vars:
     timezone: "Asia/Tokyo"
-    nodesource: "https://rpm.nodesource.com/setup_10.x"
+    nodesource: "https://rpm.nodesource.com/setup_14.x"
     app_nginx_conf_src: "/vagrant/ansible/nginx.conf.j2"
     app_nginx_conf_dest: /etc/nginx/default.d/vagrant.conf
     app_svr_dir: "/vagrant/chat-svr"

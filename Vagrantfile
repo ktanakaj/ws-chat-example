@@ -10,7 +10,12 @@ Vagrant.configure(2) do |config|
   # ホストPCのこのフォルダをマウント
   config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
 
-  # CPU数/メモリサイズ
+  # VM環境設定
+  config.vm.provider "hyperv" do |vb, override|
+    vb.cpus = 1
+    vb.memory = "1024"
+    override.vm.synced_folder ".", "/vagrant", type: "smb", mount_options: ["dir_mode=0777,file_mode=0777"]
+  end
   config.vm.provider "virtualbox" do |vb|
       vb.cpus = 1
       vb.memory = "1024"
@@ -24,6 +29,6 @@ Vagrant.configure(2) do |config|
 
   # 各種サービスが共有フォルダマウント前に起動してエラーになるので、再読み込みさせる
   config.vm.provision "shell", run: "always" do |s|
-    s.inline = "ip a show dev eth1 ; sudo systemctl restart pm2-vagrant"
+    s.inline = "ip addr ; sudo systemctl restart pm2-vagrant"
   end
 end
