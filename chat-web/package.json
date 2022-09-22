@@ -1,12 +1,13 @@
 {
   "name": "chat-web",
-  "version": "0.0.0",
+  "version": "0.3.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "lint": "ng lint"
   },
   "private": true,
   "dependencies": {
@@ -18,15 +19,31 @@
     "@angular/platform-browser": "^14.2.0",
     "@angular/platform-browser-dynamic": "^14.2.0",
     "@angular/router": "^14.2.0",
+    "@ngx-translate/core": "^14.0.0",
+    "@ngx-translate/http-loader": "^7.0.0",
+    "@types/node": "^16.11.59",
+    "bootstrap": "^3.3.7",
+    "events": "^3.3.0",
+    "jquery": "^3.6.1",
+    "json-rpc2-implementer": "^0.4.2",
     "rxjs": "~7.5.0",
+    "simple-ng-websocket": "^0.2.3",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.2.3",
+    "@angular-eslint/builder": "14.1.2",
+    "@angular-eslint/eslint-plugin": "14.1.2",
+    "@angular-eslint/eslint-plugin-template": "14.1.2",
+    "@angular-eslint/schematics": "14.1.2",
+    "@angular-eslint/template-parser": "14.1.2",
     "@angular/cli": "~14.2.3",
     "@angular/compiler-cli": "^14.2.0",
     "@types/jasmine": "~4.0.0",
+    "@typescript-eslint/eslint-plugin": "5.37.0",
+    "@typescript-eslint/parser": "5.37.0",
+    "eslint": "^8.23.1",
     "jasmine-core": "~4.3.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",

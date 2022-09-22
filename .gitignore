@@ -20,9 +20,4 @@ doc/*.mwb.*
 chat-svr/dist
 chat-svr/doc
 chat-svr/config/local.yaml
-chat-web/public/bundle.js
-chat-web/public/bundle.js.map
-chat-web/doc
-chat-web/obj
-chat-web/bin
 !.gitkeep
