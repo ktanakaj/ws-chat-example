@@ -8,17 +8,18 @@ Vagrant.configure(2) do |config|
   config.vm.network "private_network", type: "dhcp"
 
   # ホストPCのこのフォルダをマウント
+  # FIXME: シンボリックリンクが効かないため、現バージョンではそのままではアプリは動作しない筈
   config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
 
   # VM環境設定
   config.vm.provider "hyperv" do |vb, override|
     vb.cpus = 1
     vb.memory = "1024"
-    override.vm.synced_folder ".", "/vagrant", type: "smb", mount_options: ["dir_mode=0777,file_mode=0777"]
+    override.vm.synced_folder ".", "/vagrant", type: "smb", mount_options: ["mfsymlinks,dir_mode=0777,file_mode=0777"]
   end
   config.vm.provider "virtualbox" do |vb|
-      vb.cpus = 1
-      vb.memory = "1024"
+    vb.cpus = 1
+    vb.memory = "1024"
   end
 
   # ゲストPCにansibleをインストールし共有フォルダのプレイブックを実行

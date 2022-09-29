@@ -6,32 +6,28 @@ WebSocketサンプルとして作成した単純なChatアプリです。
 
 ## 環境
 * CentOS 7
-* Node.js v10.x
+* Node.js v16.x
 * nginx 1.12.x
 * TypeScript 3.x
 * WS 6.x
     * Node-config 2.x
     * Log4js 3.x
     * [json-rpc2-implementer](https://github.com/ktanakaj/json-rpc2-implementer) 0.4.x
-* Angular 6.x
-    * webpack 3.x
-    * ngx-translate 10.x
+* Angular 14.x
+    * ngx-translate 14.x
     * [simple-ng-websocket](https://github.com/ktanakaj/simple-ng-websocket) 0.2.x
 * Mocha 5.x
     * Power-assert 1.x
 
 ### 動作確認ブラウザ
-* Google Chrome Ver71.0
+* Google Chrome Ver106
 
 ※ 他は未確認
 
 ### 開発環境
 * Vagrant 2.2.x - 仮想環境管理
-    * VirtualBox 5.2.x - 仮想環境
-    * vagrant-vbguest - Vagrantプラグイン
+    * Hyper-V - 仮想環境
 * Visual Studio Code - アプリ開発用エディター
-
-※ Hyper-Vでも動作可
 
 ## フォルダ構成
 * VMルートフォルダ
@@ -65,11 +61,10 @@ Webアプリの操作用に、以下のようなサーバーコマンドを用�
     * `npm stop` - アプリの停止
 * `chat-svr/chat-web`共通
     * `npm run build` - アプリのビルド
+    * `npm start` - アプリのデバッグ起動
     * `npm run watch` - アプリのビルド（ファイル更新監視）
-    * `npm run doc` - アプリのAPIドキュメント生成
     * `npm test` - アプリのユニットテスト実行
     * `npm run lint` - アプリの静的解析ツールの実行
-    * `npm run clean` - 全ビルド生成物の削除
 
 ## その他
 各種ログは `/var/log/local/ws-chat-example` 下に出力されます。
